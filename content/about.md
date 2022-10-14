@@ -25,6 +25,9 @@ Duoyifu Xu
 ## Yang Zhou
 Yang Zhou
 
+## Ruiqing Yang
+Student
+
 <!-- Please leave in the information below -->
 
 ### Info About this Template.
