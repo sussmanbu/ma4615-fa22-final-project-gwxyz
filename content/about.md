@@ -15,6 +15,9 @@ The members of this team are below.
 
 Luis is a Ph.D. student in Stats and is the Teaching Fellow for the course.
 
+## Jingxuan (Krystal) Guo
+Jingxuan(Krystal) Guo
+
 ## Duoyifu Xu
 
 Duoyifu Xu
