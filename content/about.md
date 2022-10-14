@@ -22,6 +22,9 @@ Luis is a Ph.D. student in Stats and is the Teaching Fellow for the course.
 
 Dan is a professor in the Math/Stat department and is the instructor for the course.
 
+## Yang Zhou
+Yang Zhou
+
 <!-- Please leave in the information below -->
 
 ### Info About this Template.
