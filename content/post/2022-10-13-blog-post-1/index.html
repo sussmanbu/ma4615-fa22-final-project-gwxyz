@@ -1,0 +1,48 @@
+---
+title: blog post_1
+author: Daniel Sussman
+date: '2022-10-13'
+slug: []
+categories: []
+tags: []
+description: The three data sets we are considering to work with.
+toc: yes
+authors: [Yang Zhou, Jingxuan Guo, Zhiyue Wu, Duoyifu Xu, Ruiqing Yang]
+series: []
+lastmod: '2022-10-13T22:04:47-04:00'
+featuredVideo: ~
+featuredImage: ~
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="data-set-1" class="section level2">
+<h2>Data Set 1</h2>
+<p>Student performance
+P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of 5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp. 5-12, Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7.
+Source: <a href="http://archive.ics.uci.edu/ml/datasets/Student+Performance" class="uri">http://archive.ics.uci.edu/ml/datasets/Student+Performance</a></p>
+<p>student-mat.csv: 395 rows, 33 columns
+student-por.csv: 649 rows, 33 columns</p>
+<p>This data approaches student achievement in secondary education of two Portuguese schools. The data attributes include student grades, demographic, social and school related features, and it was collected by using school reports and questionnaires. Two datasets are provided regarding the performance in two distinct subjects: Mathematics (mat) and Portuguese language (por). The datasets can be downloaded as csv files, so we can directly load them in RStudio.
+We will focus on the relationship between the attributes and scores. What factors largely affect three grades? Is there any relationship between G1, G2 score and G3 score?</p>
+<p>Issues we may encounter:
+Por and Mat data sets may yield the same results, so it may be redundant to analyze both data sets.
+The data might not reflect real results since students may report their situations in a biased way.
+The attributes and grades may not have direct relationships but we wrongly view them as related.
+Data in these two schools cannot reflect the situation on a greater scale.</p>
+</div>
+<div id="data-set-2" class="section level2">
+<h2>Data set 2</h2>
+<p>College completion data from 3,800 degree-granting institutions in the US.
+<a href="https://data.world/databeats/college-completion" class="uri">https://data.world/databeats/college-completion</a></p>
+<p>These data were pulled from the ‘College Completion microsite’ produced by ‘The Chronicle of Higher Education’. Its goal is to share data on completion rates in US higher education in a visually stimulating way. There are 3798 rows representing 3800 degree-granting institutions in the United States, 62 columns includes schools information, total numbers of enrollment, percent of completion, financial aid, spending per completion and many other detailed parameters that enable us to better explore the relationships. We are able to load the data in csv form. the main question we want to address is how college completion is affected by the variation from institution factors and personal factors.</p>
+</div>
+<div id="data-set-3" class="section level2">
+<h2>Data Set 3</h2>
+<p>NBA player stats
+<a href="https://github.com/peasant98/TheNBACSV/blob/master/nbaNew.csv" class="uri">https://github.com/peasant98/TheNBACSV/blob/master/nbaNew.csv</a></p>
+<p>This dataset contains massive NBA player stats from 1950-2017. It contains all performance information of each NBA player in 67 NBA seasons. There are 24625 rows and 54 columns. The data was originally collected from the website Basketball Reference. We intend to analyze the data and predict the future salary and value of each player and predict sports decisions . We also want to find the trend of the development of basketball. One challenge for us is to understand the relationship between each terminology in the basketball field.</p>
+</div>
