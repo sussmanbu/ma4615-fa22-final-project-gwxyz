@@ -1,0 +1,51 @@
+---
+title: blog post 2
+author: Group gwxyz
+date: '2022-10-21'
+slug: []
+categories: []
+tags: []
+description: ~
+toc: yes
+authors: []
+series: []
+lastmod: '2022-10-21T23:27:02-04:00'
+featuredVideo: ~
+featuredImage: ~
+---
+
+
+Initial steps: We load our dataset as a csv file and assign our dataset as cc. Our dataset has many columns with NULL, so we will remove those columns and take the rest as our main dataset. Then we plan to change all NULL, which are character types, to NA or 0 to match the data type of its own column. Also, in the "counted_pct" column, we plan to remove the "|07" and "|10" as they stand for 2-year and 4-year, which we already have the column "level" that specifies the year, and change "counted_pct" data type to double. Some attributes we are focusing on: awards_per_value, exp_award_value, med_sat_value, aid_value, endow_value, grad_100_value
+
+```{r}
+library(readr)
+library(tidyverse)
+cc <- read_csv("/Users/krystal/Desktop/MA415/ma4615-fa22-final-project-gwxyz/dataset/cc_institution_details.csv")
+```
+#initial steps for loading data
+```{r}
+ggplot(data = cc) +geom_point(mapping = aes(aid_value, grad_100_value, color = control))
+```
+# This plot shows the relationship between the amount of student aid and the percentage of undergraduates who complete their degree within 100 percent of time, based on the school types.
+
+```{r}
+ggplot(cc, aes(factor(level), awards_per_value)) +
+  geom_boxplot()
+```
+# This boxplot shows the relationship between level of institution (4-year, 2-year) and college completion rate
+```{r}
+cc %>%
+  ggplot(aes(x= aid_value, y=awards_per_value, color = control)) +
+  geom_point()
+```
+# The plot shows the relationship between average amount of aids and the completion rate of undergraduate students.
+
+
+
+Beneficence 
+Our data about college completion does not contain personal information, so basically the dataset itself doesn't have risks to individuals and communities. The data also does not expose any sensitive information about people. Through analyzing the data, we can obtain some information about the relation, for example, among standardized test scores, aid value, completion rate, which may benefit the colleges by affecting their decision on admitting students. There may be some limits for the data. For instance, the data are given per school, but there may be some outliers in the data per student, which is not given in our dataset, and after calculation, transfering into our data, our conclusion based on these data may be a little different from the real one because of the existence of the outliers.
+
+Justice
+The value of the data rests fundamentally on credibility and accuracy, and the principle of justice is a key point to ensure that our data is credible and accurate. The justice of our data is reflected in the control of independent variables, namely, strictly dividing the target object and filtering out some samples that are unfair relative to the whole. For example, data on dropouts and transfers are excluded from graduation data. At the same time, our data challenge traditional models of ethnic classification. To be fair we excluded some racially ambiguous data. 
+In addition, Anonymous data statistics ensure the authenticity of the results, which is also a reflection of justice for different graduate income groups.
+
