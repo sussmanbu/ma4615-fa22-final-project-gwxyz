@@ -17,6 +17,7 @@ featuredImage: ~
 
 Initial steps: We load our dataset as a csv file and assign our dataset as cc. Our dataset has many columns with NULL, so we will remove those columns and take the rest as our main dataset. Then we plan to change all NULL, which are character types, to NA or 0 to match the data type of its own column. Also, in the "counted_pct" column, we plan to remove the "|07" and "|10" as they stand for 2-year and 4-year, which we already have the column "level" that specifies the year, and change "counted_pct" data type to double. Some attributes we are focusing on: awards_per_value, exp_award_value, med_sat_value, aid_value, endow_value, grad_100_value
 
+
 ```{r}
 library(readr)
 library(tidyverse)
