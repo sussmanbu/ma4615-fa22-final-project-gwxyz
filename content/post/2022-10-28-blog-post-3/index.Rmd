@@ -41,7 +41,7 @@ c1%>% group_by(control)%>%
             count = n())
 
 ```
-# 
+##
 A trend that we see in this chart is that it seems students with less college spending has a higher percentage of college completion. we also did a summary stats on the mean spending by different institute type. Private not-for-profit college has the highest spending and public school has the least spending. the mean student spending across all college in the data set is $61282 
 ```{r}
 new_england <- filter(cc_clean, state %in% c("Massachusetts","Connecticut", "Maine", "New Hampshire", "New Jersey","New York" ))
