@@ -1,0 +1,73 @@
+---
+title: blog Post 3
+author: GWXYZ
+date: '2022-10-28'
+slug: []
+categories: []
+tags: []
+description: data cleaning and intial exploration of data
+toc: yes
+authors: []
+series: []
+lastmod: '2022-10-28T22:16:52-04:00'
+featuredVideo: ~
+featuredImage: ~
+---
+
+## Data choice
+We decide to use our data set 2, which is College completion data from 3,800 degree-granting institutions in the US. https://data.world/databeats/college-completion
+
+## Data cleaning
+we first cleaned the data by removing variables that has too many missing value and has no contribution to our data analysis. then we replace every missing value which has the letter "NULL" to blank value na, which helps us to better process the data.
+
+```{r}
+library(readr)
+library(tidyverse)
+cc <- read.csv("/Users/ziv/Documents/ma 415 project/ma4615-fa22-final-project-gwxyz/dataset/cc_institution_details.csv")
+cc_clean<- select(cc, -(basic:site), -(vsa_year:cohort_size), -(med_sat_value:med_sat_percentile))%>%
+  mutate(across(everything(), ~replace(., . ==  "NULL" , NA)))
+```
+
+## Data exploration
+
+```{r}
+c1<- filter(cc_clean, awards_per_value <100)
+ggplot(c1) +
+  geom_point(mapping = aes(x = exp_award_state_value, y=awards_per_value, color = control))+
+  geom_smooth(mapping = aes(x = exp_award_state_value, y=awards_per_value))
+summary(cc_clean$exp_award_state_value)
+c1%>% group_by(control)%>%
+  summarize(mean_spending = mean(exp_award_state_value, na.rm = TRUE),
+            count = n())
+
+```
+# 
+A trend that we see in this chart is that it seems students with less college spending has a higher percentage of college completion. we also did a summary stats on the mean spending by different institute type. Private not-for-profit college has the highest spending and public school has the least spending. the mean student spending across all college in the data set is $61282 
+```{r}
+new_england <- filter(cc_clean, state %in% c("Massachusetts","Connecticut", "Maine", "New Hampshire", "New Jersey","New York" ))
+ggplot(new_england) + geom_bar(aes(x = state, fill = control), position = "fill")
+ggplot(cc_clean) + geom_bar(aes(x = state, fill = control), position = "fill")
+
+new_england%>%
+  group_by(state) %>%
+  summarize(mean_student = mean(student_count, na.rm = TRUE),
+            count = n())
+
+new_england%>%
+  group_by(state) %>%
+  summarize(mean_completion = mean(awards_per_value),
+            count = n())
+
+country <- cc_clean%>%
+  group_by(state) %>%
+  summarize(mean_completion = mean(awards_per_value),
+            count = n())
+ggplot(country) + stat_summary(
+  aes(x = state, y = mean_completion), geom = "bar", fill = "orange")
+
+summary(cc_clean$awards_per_value)
+
+```
+# 
+We explored school's completion rate from US and the school in the New England area, which is consistently pretty low with mean value of 23.44% completion
+
