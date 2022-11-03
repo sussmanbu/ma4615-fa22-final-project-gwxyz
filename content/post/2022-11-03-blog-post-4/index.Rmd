@@ -34,11 +34,18 @@ nba_clean<- select(nba, -(blanl), -(blank2))%>%
 
 ```{r}
 nba_clean %>%
-  ggplot(aes(factor(Age),G)) +
-  geom_boxplot()
+  ggplot(aes(VORP,PlayerSalary)) +
+  geom_point()
 ```
+
+## Model
 ```{r}
+
 LinearModel <- lm(FGA ~ Age, data=nba_clean)
 
-```
+nba_clean %>% 
+  filter(FGA < 2500)%>%
+  ggplot(aes(factor(Age),FGA)) +
+  geom_boxplot()
 
+```
