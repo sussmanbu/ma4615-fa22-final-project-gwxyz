@@ -1,7 +1,7 @@
 ---
-title: Blog Post 4
-author: Daniel Sussman
-date: '2022-11-03'
+title: "Blog Post 4"
+author: "GWXYZ"
+date: "2022-11-03"
 slug: []
 categories: []
 tags: []
@@ -9,11 +9,10 @@ description: data cleaning and deeper exploration of data
 toc: yes
 authors: []
 series: []
-lastmod: '2022-11-03T18:24:25-04:00'
-featuredVideo: ~
-featuredImage: ~
+lastmod: "2022-11-03T20:18:36-04:00"
+featuredVideo: null
+featuredImage: null
 ---
-
 ## Change of dataset
 NBA player stats 
 https://github.com/peasant98/TheNBACSV/blob/master/nbaNew.csv
@@ -25,18 +24,15 @@ This dataset contains massive NBA player stats from 1950-2017. It contains all p
 
 library(readr)
 library(tidyverse)
-nba <- read.csv("dataset/nbaNew.csv", col_types = cols(PlayerSalary = col_number()))
+nba <- read_csv("/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nbaNew.csv", col_types = cols(PlayerSalary = col_number()))
 nba_clean<- select(nba, -(blanl), -(blank2))%>%
   na_if("")%>%
   filter(!row_number() %in% c(24625, 24626, 24627, 24628, 24628))
 
 ```
 
-```{r}
-nba_clean %>%
-  ggplot(aes(VORP,PlayerSalary)) +
-  geom_point()
-```
+
+
 
 ## Model
 ```{r}
@@ -47,5 +43,4 @@ nba_clean %>%
   filter(FGA < 2500)%>%
   ggplot(aes(factor(Age),FGA)) +
   geom_boxplot()
-
 ```
