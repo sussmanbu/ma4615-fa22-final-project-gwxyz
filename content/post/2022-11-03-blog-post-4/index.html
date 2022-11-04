@@ -37,11 +37,28 @@ library(tidyverse)</code></pre>
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>nba &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nbaNew.csv&quot;, col_types = cols(PlayerSalary = col_number()))</code></pre>
+<pre class="r"><code>nba &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nbaNew.csv&quot;, col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre class="r"><code>nba_clean&lt;- select(nba, -(blanl), -(blank2))%&gt;%
+<pre class="r"><code>nba_clean&lt;- select(nba, -(blanl), -(blank2), -(`3P`), -(`3PA`),-(`3P%`))%&gt;%
   na_if(&quot;&quot;)%&gt;%
   filter(!row_number() %in% c(24625, 24626, 24627, 24628, 24628))</code></pre>
+<p>We clean the meaningless part of the dataset after row 24625 and change some colume type into number.</p>
+</div>
+<div id="graph" class="section level2">
+<h2>Graph</h2>
+<pre class="r"><code>nba_clean %&gt;%
+  filter(Pos %in% c(&quot;PF&quot;,&quot;SF&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;PG&quot;))%&gt;%
+  filter(`ORB%` &gt;0, `ORB%`&lt;25)%&gt;%
+  ggplot() +
+  geom_bar(aes(x = ORB, fill = Pos)) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>nba_clean %&gt;%
+  filter(Pos %in% c(&quot;PF&quot;,&quot;SF&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;PG&quot;))%&gt;%
+  filter(`ORB%` &gt;0, `ORB%`&lt;25)%&gt;%
+  ggplot() + 
+  stat_summary(aes(x = Pos, y = `ORB%`),
+  fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 </div>
 <div id="model" class="section level2">
 <h2>Model</h2>
@@ -51,5 +68,5 @@ nba_clean %&gt;%
   filter(FGA &lt; 2500)%&gt;%
   ggplot(aes(factor(Age),FGA)) +
   geom_boxplot()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
