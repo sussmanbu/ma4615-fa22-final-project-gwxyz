@@ -1,5 +1,5 @@
 ---
-  title: "Blog Post 4"
+title: "Blog Post 4"
 author: "GWXYZ"
 date: "2022-11-03"
 slug: []
