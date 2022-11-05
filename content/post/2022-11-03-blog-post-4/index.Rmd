@@ -38,7 +38,9 @@ nba_clean %>%
   filter(`ORB%` >0, `ORB%`<25)%>%
   ggplot() +
   geom_bar(aes(x = ORB, fill = Pos)) 
+```
 
+```{r}
 nba_clean %>%
   filter(Pos %in% c("PF","SF", "C", "SG", "PG"))%>%
   filter(`ORB%` >0, `ORB%`<25)%>%
@@ -51,11 +53,14 @@ nba_clean %>%
 
 ## Model
 ```{r}
-
-LinearModel <- lm(FGA ~ Age, data=nba_clean)
+LinearModel <- lm(PF ~ DRB, data=nba_clean)
+beta <- coef(LinearModel)
 
 nba_clean %>% 
-  filter(FGA < 2500)%>%
-  ggplot(aes(factor(Age),FGA)) +
-  geom_boxplot()
+  ggplot(aes(DRB,PF)) +
+  geom_point()+
+  geom_abline(intercept = beta[1],
+              slope = beta[2], color = "red")
+
+summary(LinearModel)
 ```

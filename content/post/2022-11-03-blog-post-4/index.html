@@ -58,15 +58,38 @@ library(tidyverse)</code></pre>
   ggplot() + 
   stat_summary(aes(x = Pos, y = `ORB%`),
   fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="model" class="section level2">
 <h2>Model</h2>
-<pre class="r"><code>LinearModel &lt;- lm(FGA ~ Age, data=nba_clean)
+<pre class="r"><code>LinearModel &lt;- lm(PF ~ DRB, data=nba_clean)
+beta &lt;- coef(LinearModel)
 
 nba_clean %&gt;% 
-  filter(FGA &lt; 2500)%&gt;%
-  ggplot(aes(factor(Age),FGA)) +
-  geom_boxplot()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+  ggplot(aes(DRB,PF)) +
+  geom_point()+
+  geom_abline(intercept = beta[1],
+              slope = beta[2], color = &quot;red&quot;)</code></pre>
+<pre><code>## Warning: Removed 3829 rows containing missing values (geom_point).</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>summary(LinearModel)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = PF ~ DRB, data = nba_clean)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -302.431  -33.864   -8.712   27.962  231.905 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 43.396391   0.469889   92.36   &lt;2e-16 ***
+## DRB          0.460807   0.002267  203.26   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 47.71 on 20795 degrees of freedom
+##   (因为不存在，3829个观察量被删除了)
+## Multiple R-squared:  0.6652, Adjusted R-squared:  0.6652 
+## F-statistic: 4.132e+04 on 1 and 20795 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
