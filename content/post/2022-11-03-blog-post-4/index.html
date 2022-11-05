@@ -58,7 +58,8 @@ library(tidyverse)</code></pre>
   ggplot() + 
   stat_summary(aes(x = Pos, y = `ORB%`),
   fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+We tried to find relations between different variables, and we get the following model after many attempts.</p>
 </div>
 <div id="model" class="section level2">
 <h2>Model</h2>
@@ -92,4 +93,5 @@ nba_clean %&gt;%
 ##   (因为不存在，3829个观察量被删除了)
 ## Multiple R-squared:  0.6652, Adjusted R-squared:  0.6652 
 ## F-statistic: 4.132e+04 on 1 and 20795 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>This model has a high significant value for every parameter and the adjusted R squared is good.</p>
 </div>

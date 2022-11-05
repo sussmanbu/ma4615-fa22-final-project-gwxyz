@@ -49,7 +49,7 @@ nba_clean %>%
   fun = mean, geom = "bar")
 
 ```
-
+We tried to find relations between different variables, and we get the following model after many attempts.
 
 ## Model
 ```{r}
@@ -64,3 +64,4 @@ nba_clean %>%
 
 summary(LinearModel)
 ```
+This model has a high significant value for every parameter and the adjusted R squared is good.
