@@ -20,6 +20,8 @@ The dataset we are combining with injury data of season 2014-2015, 2015-2016, 20
 In order to combine the datasets, we need to further clean our original datasets. To combine the injury data with our original data, we have to change the data of injury time period into year, and combine the datasets by year and player name. Then we need to clean the data by grouping them by team for every year and find the average data for every team, so we can combine the playoffs data with it. Finally, we can filter the data from the three seasons 2014-2015, 2015-2016, 2016-2017 and do further research. 
 
 ## Cleaning Data
+
+```{r}
 playoffs <- nba_clean%>%
   filter(SeasonStart%in%c("2014","2015","2016"))%>%
   filter(Tm%in%c("IND","MIA", "TOT", "CHA", "WAS", "BRK","CHI", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL",
@@ -33,3 +35,4 @@ colnames(Illness_table)[colnames(Illness_table) %in% c('INJURED ON','DAYS MISSED
 Illness_table$Illness_year <- substr(Illness_table$Illness_year,nchar(Illness_table$Illness_year)-3,nchar(Illness_table$Illness_year))
 Illness_table %>% mutate(across(starts_with("Illness"),
                                 ~ as.numeric(as.character(.))))
+```
