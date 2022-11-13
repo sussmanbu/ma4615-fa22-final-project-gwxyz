@@ -19,3 +19,23 @@ featuredImage: ~
 
 </div>
 
+<div id="combining-data" class="section level2">
+<h2>Combining Data</h2>
+<p>The dataset we are combining with injury data of season 2014-2015, 2015-2016, 2016-2017 in order to predict the final result of 2017-2018 season. We use the injury data in order to get a better understanding of the team line-up in every play and also the effect of injuries on the chance of winning. We also combine with the salary cap in order to understand the relationship between the wealth of a team and its chance of winning.</p>
+<p>In order to combine the datasets, we need to further clean our original datasets. To combine the injury data with our original data, we have to change the data of injury time period into year, and combine the datasets by year and player name. Then we need to clean the data by grouping them by team for every year and find the average data for every team, so we can combine the playoffs data with it. Finally, we can filter the data from the three seasons 2014-2015, 2015-2016, 2016-2017 and do further research.</p>
+</div>
+<div id="cleaning-data" class="section level2">
+<h2>Cleaning Data</h2>
+<p>playoffs &lt;- nba_clean%&gt;%
+filter(SeasonStart%in%c(“2014”,“2015”,“2016”))%&gt;%
+filter(Tm%in%c(“IND”,“MIA”, “TOT”, “CHA”, “WAS”, “BRK”,“CHI”, “ATL”,“SAS”,“OKC”,“LAC”,“HOU”,“POR”,“GSW”,“MEM”,“DAL”,
+“NOP”, “CLE”, “TOR”, “BOS”, “MIL”,
+“DET”))</p>
+<p>Illness &lt;- read_html(“<a href="https://hashtagbasketball.com/injury/illness" class="uri">https://hashtagbasketball.com/injury/illness</a>”)
+(Illness_node &lt;- Illness %&gt;% html_node(“.col-md-12”))
+Illness_table &lt;- Illness_node %&gt;% html_table() %&gt;% select(-(RETURNED))
+colnames(Illness_table)[colnames(Illness_table) %in% c(‘INJURED ON’,‘DAYS MISSED’)] &lt;- c(‘Illness_year’,‘Illess_days_missed’)
+Illness_table<span class="math inline">\(Illness_year &lt;- substr(Illness_table\)</span>Illness_year,nchar(Illness_table<span class="math inline">\(Illness_year)-3,nchar(Illness_table\)</span>Illness_year))
+Illness_table %&gt;% mutate(across(starts_with(“Illness”),
+~ as.numeric(as.character(.))))</p>
+</div>
