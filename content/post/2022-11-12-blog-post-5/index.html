@@ -26,16 +26,60 @@ featuredImage: ~
 </div>
 <div id="cleaning-data" class="section level2">
 <h2>Cleaning Data</h2>
-<p>playoffs &lt;- nba_clean%&gt;%
-filter(SeasonStart%in%c(“2014”,“2015”,“2016”))%&gt;%
-filter(Tm%in%c(“IND”,“MIA”, “TOT”, “CHA”, “WAS”, “BRK”,“CHI”, “ATL”,“SAS”,“OKC”,“LAC”,“HOU”,“POR”,“GSW”,“MEM”,“DAL”,
-“NOP”, “CLE”, “TOR”, “BOS”, “MIL”,
-“DET”))</p>
-<p>Illness &lt;- read_html(“<a href="https://hashtagbasketball.com/injury/illness" class="uri">https://hashtagbasketball.com/injury/illness</a>”)
-(Illness_node &lt;- Illness %&gt;% html_node(“.col-md-12”))
-Illness_table &lt;- Illness_node %&gt;% html_table() %&gt;% select(-(RETURNED))
-colnames(Illness_table)[colnames(Illness_table) %in% c(‘INJURED ON’,‘DAYS MISSED’)] &lt;- c(‘Illness_year’,‘Illess_days_missed’)
-Illness_table<span class="math inline">\(Illness_year &lt;- substr(Illness_table\)</span>Illness_year,nchar(Illness_table<span class="math inline">\(Illness_year)-3,nchar(Illness_table\)</span>Illness_year))
-Illness_table %&gt;% mutate(across(starts_with(“Illness”),
-~ as.numeric(as.character(.))))</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+## ✔ readr   2.1.2      ✔ forcats 0.5.2 
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(rvest)</code></pre>
+<pre><code>## 
+## 载入程辑包：&#39;rvest&#39;
+## 
+## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>nba_clean &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nba_clean.csv&quot;)</code></pre>
+<pre><code>## Rows: 24626 Columns: 49
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (4): PlayerName, Pos, Tm, FTr
+## dbl (45): #, SeasonStart, PlayerSalary, Age, G, GS, MP, PER, TS%, 3PAr, ORB%...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>playoffs &lt;- nba_clean%&gt;%
+  filter(SeasonStart%in%c(&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;))%&gt;%
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOT&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;,
+                 &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
+                 &quot;DET&quot;))
+
+Illness &lt;- read_html(&quot;https://hashtagbasketball.com/injury/illness&quot;)
+(Illness_node &lt;- Illness %&gt;% html_node(&quot;.col-md-12&quot;))</code></pre>
+<pre><code>## {html_node}
+## &lt;div class=&quot;col-md-12&quot;&gt;
+## [1] &lt;div class=&quot;table-responsive&quot;&gt;\n&lt;div&gt;\n&lt;table class=&quot;table table-sm table ...</code></pre>
+<pre class="r"><code>Illness_table &lt;- Illness_node %&gt;% html_table() %&gt;% select(-(RETURNED))
+colnames(Illness_table)[colnames(Illness_table) %in% c(&#39;INJURED ON&#39;,&#39;DAYS MISSED&#39;)] &lt;- c(&#39;Illness_year&#39;,&#39;Illess_days_missed&#39;)
+Illness_table$Illness_year &lt;- substr(Illness_table$Illness_year,nchar(Illness_table$Illness_year)-3,nchar(Illness_table$Illness_year))
+Illness_table %&gt;% mutate(across(starts_with(&quot;Illness&quot;),
+                                ~ as.numeric(as.character(.))))</code></pre>
+<pre><code>## Warning in mask$eval_all_mutate(quo): 强制改变过程中产生了NA</code></pre>
+<pre><code>## # A tibble: 429 × 4
+##    PLAYER           TEAM      Illness_year Illess_days_missed
+##    &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;             
+##  1 Jeremy Sochan    Spurs             2022 3                 
+##  2 Paul George      Clippers          2022 2                 
+##  3 Serge Ibaka      Bucks             2022 1                 
+##  4 Luca Vildoza     Bucks             2022 2                 
+##  5 Frank Ntilikina  Mavericks         2022 15                
+##  6 Donovan Mitchell Jazz              2022 6                 
+##  7 Serge Ibaka      Bucks             2022 6                 
+##  8 Paul Millsap     76ers             2022 5                 
+##  9 Dejounte Murray  Spurs             2022 9                 
+## 10 Marquese Chriss  Mavericks         2022 2                 
+## # … with 419 more rows</code></pre>
 </div>

@@ -25,6 +25,8 @@ In order to combine the datasets, we need to further clean our original datasets
 library(tidyverse)
 library(rvest)
 
+nba_clean <- read_csv("/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nba_clean.csv")
+
 playoffs <- nba_clean%>%
   filter(SeasonStart%in%c("2014","2015","2016"))%>%
   filter(Tm%in%c("IND","MIA", "TOT", "CHA", "WAS", "BRK","CHI", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL",
@@ -38,4 +40,5 @@ colnames(Illness_table)[colnames(Illness_table) %in% c('INJURED ON','DAYS MISSED
 Illness_table$Illness_year <- substr(Illness_table$Illness_year,nchar(Illness_table$Illness_year)-3,nchar(Illness_table$Illness_year))
 Illness_table %>% mutate(across(starts_with("Illness"),
                                 ~ as.numeric(as.character(.))))
+
 ```
