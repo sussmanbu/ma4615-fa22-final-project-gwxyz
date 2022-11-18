@@ -57,29 +57,29 @@ featuredImage: ~
                  &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
                  &quot;DET&quot;))
 
-Illness &lt;- read_html(&quot;https://hashtagbasketball.com/injury/illness&quot;)
-(Illness_node &lt;- Illness %&gt;% html_node(&quot;.col-md-12&quot;))</code></pre>
-<pre><code>## {html_node}
-## &lt;div class=&quot;col-md-12&quot;&gt;
-## [1] &lt;div class=&quot;table-responsive&quot;&gt;\n&lt;div&gt;\n&lt;table class=&quot;table table-sm table ...</code></pre>
-<pre class="r"><code>Illness_table &lt;- Illness_node %&gt;% html_table() %&gt;% select(-(RETURNED))
-colnames(Illness_table)[colnames(Illness_table) %in% c(&#39;INJURED ON&#39;,&#39;DAYS MISSED&#39;)] &lt;- c(&#39;Illness_year&#39;,&#39;Illess_days_missed&#39;)
-Illness_table$Illness_year &lt;- substr(Illness_table$Illness_year,nchar(Illness_table$Illness_year)-3,nchar(Illness_table$Illness_year))
-Illness_table %&gt;% mutate(across(starts_with(&quot;Illness&quot;),
-                                ~ as.numeric(as.character(.))))</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(quo): 强制改变过程中产生了NA</code></pre>
-<pre><code>## # A tibble: 429 × 4
-##    PLAYER           TEAM      Illness_year Illess_days_missed
-##    &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;             
-##  1 Jeremy Sochan    Spurs             2022 3                 
-##  2 Paul George      Clippers          2022 2                 
-##  3 Serge Ibaka      Bucks             2022 1                 
-##  4 Luca Vildoza     Bucks             2022 2                 
-##  5 Frank Ntilikina  Mavericks         2022 15                
-##  6 Donovan Mitchell Jazz              2022 6                 
-##  7 Serge Ibaka      Bucks             2022 6                 
-##  8 Paul Millsap     76ers             2022 5                 
-##  9 Dejounte Murray  Spurs             2022 9                 
-## 10 Marquese Chriss  Mavericks         2022 2                 
-## # … with 419 more rows</code></pre>
+Injury &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/injuries_2010-2020 2.csv&quot;, col_types = cols_only(Date = col_character(), Team = col_character(), Relinquished = col_character()))
+
+colnames(Injury)[3] &lt;- &quot;PlayerName&quot;
+colnames(Injury)[1] &lt;- &quot;SeasonStart&quot;
+colnames(Injury)[2] &lt;- &quot;Tm&quot;
+Injury &lt;- Injury %&gt;% filter(!is.na(PlayerName))
+Injury &lt;- Injury %&gt;% mutate(injuries_data = 1)
+Injury$SeasonStart &lt;- substr(Injury$SeasonStart,1,4)
+Injury_clean &lt;- Injury %&gt;% filter(SeasonStart %in% c(&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;))
+playoffs &lt;- nba_clean%&gt;%
+  filter(SeasonStart%in%c(&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;))%&gt;%
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOT&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;,
+                 &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
+                 &quot;DET&quot;))
+playoffs$SeasonStart &lt;- as.character(playoffs$SeasonStart)
+Injury_clean&lt;- Injury_clean %&gt;%
+  mutate(Tm = recode(Tm, &#39;Pacers&#39; = &#39;IND&#39;, &#39;Heat&#39; = &#39;MIA&#39;,&#39;Hornets&#39; = &#39;CHA&#39;,&#39;Wizards&#39; = &#39;WAS&#39;,&#39;Nets&#39; = &#39;BRK&#39;,
+                       &#39;Bulls&#39; = &#39;CHI&#39;,&#39;Hawks&#39; = &#39;ATL&#39;,&#39;Spurs&#39; = &#39;SAS&#39;,&#39;Thunder&#39; = &#39;OKC&#39;, &#39;Thunder&#39; = &#39;LAC&#39;,&#39;Rockets&#39; = &#39;HOU&#39;,
+                       &#39;Blazers&#39; = &#39;POR&#39;,&#39;Warriors&#39; = &#39;GSW&#39;,&#39;Grizzlies&#39; = &#39;MEM&#39;,&#39;Mavericks&#39; = &#39;DAL&#39;,&#39;Pelicans&#39; = &#39;NOP&#39;,&#39;Cavaliers&#39; = &#39;CLE&#39;,
+                       &#39;Raptors&#39; = &#39;TOR&#39;,&#39;Celtics&#39; = &#39;BOS&#39;,&#39;Bucks&#39; = &#39;MIL&#39;,&#39;Pistons&#39; = &#39;DET&#39;))%&gt;%
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOT&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;,
+                   &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
+                   &quot;DET&quot;))
+
+combine &lt;- playoffs %&gt;% left_join(Injury_clean, by = c(&quot;PlayerName&quot;,&quot;SeasonStart&quot;,&quot;Tm&quot;))</code></pre>
 </div>
