@@ -22,6 +22,9 @@ In order to combine the datasets, we need to further clean our original datasets
 ## Cleaning Data
 
 ```{r}
+library(tidyverse)
+library(rvest)
+
 playoffs <- nba_clean%>%
   filter(SeasonStart%in%c("2014","2015","2016"))%>%
   filter(Tm%in%c("IND","MIA", "TOT", "CHA", "WAS", "BRK","CHI", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL",
