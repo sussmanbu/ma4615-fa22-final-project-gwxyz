@@ -5,7 +5,7 @@ date: '2022-11-17'
 slug: []
 categories: []
 tags: []
-description: ~
+description: Interactive Idea
 toc: yes
 authors: []
 series: []
@@ -14,6 +14,12 @@ featuredVideo: ~
 featuredImage: ~
 ---
 
-```{r}
+## Interactive
+1.Using histograms to analyze - more intuitive understanding of the development in order to better predict the result of 2017-2018 season using all the data provided in 2014-2015, 2015-2016, 2016-2017 season. 
 
-```
+(1). One variable each year within one team in order to understand the development of that team. We plan to create two options for the clients to select. The first one is to select a specific team and the second one is to select a specific variable. Then the client can compare how the variable changes through each year. 
+
+(2). One variable among each team within one year or specify which teams clients want to compare in order to have a better understanding of the difference between teams. The two options for this graph are variable and year, so the clients can compare different teams in one specific year for each variable.
+
+2.Click on any data point to see the details or select by brushing. A scatterplot will be made based on the player’s age and their total points at that season. 
+
