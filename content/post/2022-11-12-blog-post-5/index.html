@@ -42,7 +42,7 @@ featuredImage: ~
 ## The following object is masked from &#39;package:readr&#39;:
 ## 
 ##     guess_encoding</code></pre>
-<pre class="r"><code>nba_clean &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nba_clean.csv&quot;)</code></pre>
+<pre class="r"><code>nba_clean &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;nba_clean.csv&quot;))</code></pre>
 <pre><code>## Rows: 24626 Columns: 49
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -51,13 +51,7 @@ featuredImage: ~
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>playoffs &lt;- nba_clean%&gt;%
-  filter(SeasonStart%in%c(&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;))%&gt;%
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOT&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;,
-                 &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
-                 &quot;DET&quot;))
-
-Injury &lt;- read_csv(&quot;/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/injuries_2010-2020 2.csv&quot;, col_types = cols_only(Date = col_character(), Team = col_character(), Relinquished = col_character()))
+<pre class="r"><code>Injury &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;injuries_2010-2020 2.csv&quot;), col_types = cols_only(Date = col_character(), Team = col_character(), Relinquished = col_character()))
 
 colnames(Injury)[3] &lt;- &quot;PlayerName&quot;
 colnames(Injury)[1] &lt;- &quot;SeasonStart&quot;
@@ -81,5 +75,6 @@ Injury_clean&lt;- Injury_clean %&gt;%
                    &quot;NOP&quot;, &quot;CLE&quot;, &quot;TOR&quot;, &quot;BOS&quot;, &quot;MIL&quot;,
                    &quot;DET&quot;))
 
-combine &lt;- playoffs %&gt;% left_join(Injury_clean, by = c(&quot;PlayerName&quot;,&quot;SeasonStart&quot;,&quot;Tm&quot;))</code></pre>
+combine &lt;- playoffs %&gt;% left_join(Injury_clean, by = c(&quot;PlayerName&quot;,&quot;SeasonStart&quot;,&quot;Tm&quot;))%&gt;% 
+  mutate(injuries_data = coalesce(injuries_data, 0))</code></pre>
 </div>

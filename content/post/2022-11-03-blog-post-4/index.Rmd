@@ -24,10 +24,10 @@ This dataset contains massive NBA player stats from 1950-2017. It contains all p
 
 library(readr)
 library(tidyverse)
-nba <- read_csv("/Users/xuduoyifu/Desktop/大四/MA415/HW/ma4615-fa22-final-project-gwxyz/dataset/nbaNew.csv", col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))
+nba <- read_csv(here::here("dataset", "nbaNew.csv"), col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))
 nba_clean<- select(nba, -(blanl), -(blank2), -(`3P`), -(`3PA`),-(`3P%`))%>%
   na_if("")%>%
-  filter(!row_number() %in% c(24625, 24626, 24627, 24628, 24628))
+  filter(!row_number() %in% c(24625, 24626, 24627, 24628))
 ```
 We clean the meaningless part of the dataset after row 24625 and change some colume type into number.
 

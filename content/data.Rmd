@@ -8,91 +8,78 @@ draft: false
 ---
 
 
+## Dataset Summary
 
-This comes from the file `content/data.Rmd`.
+https://github.com/peasant98/TheNBACSV
 
-Your first steps in this project will be to find data to work on.
-
-I recommend trying to find data that interests you and that you are knowledgeable about. A bad example would be if you have no interest in video games but your data set is about video games. I also recommend finding data that is related to current events, social justice, and other areas that have an impact.
-
-You are __not__ allowed to work on COVID data.
-
-Initially, you will study _one dataset_ but later you will need to combine that data with another dataset. For this reason, I recommend finding data that has some date and/or location components. These types of data are conducive to interesting visualizations and analysis and you can also combine this data with other data that also has a date or location variable.
-Data from the census, weather data, economic data, are all relatively easy to combine with other data with time/location components.
+The data is being collected to see an individual player’s performance in a specific season in the NBA. More specifically, one can find the row with an individual player stats from a specific season of his Minutes Played, Usage Percentage, Assists, Turnover Percentages, etc.
+Matt Strong collected the data and put it together, who is a software engineer at Microsoft and robotics researcher. He collected the data in order to determine who is a good/bad player in the NBA.
 
 
-## Where to keep data?
+https://www.kaggle.com/datasets/ghopkins/nba-injuries-2010-2018
+
+The data is being collected to see which teams have had the most injuries in the past 5 seasons and also which types of injuries a specific player sustained. Moreover, since 2010, in which season did the NBA suffer the most injuries and which types of injuries tend to be season ending.
+Randall Hopkins collected the data and put it together. 
 
 
-Below 50mb: In `dataset` folder
 
-Above 50mb: In `dataset_ignore` folder. This folder will be ignored by `git` so you'll have to manually sync these files across your team.
+## Data Files And Variables Summary
 
-### Sharing your data
+There are four data files that we are using for the project. The main data file is `nbaNew.csv`, which contains nba player’s stats from 1950 to 2017. Out of 52 variables, the ones we are focusing on are ‘season start’, ‘Player name’’, ‘Pos’(player’s position), ‘Age’, ‘TM'(team), ‘PER’(points per game), and the rest are player’s game stats including shooting percentage, block, steal etc. 
 
 
-For small datasets (<50mb), you can use the `dataset` folder that is tracked by github. Add the files just like you would any other file.
+Data file `playoffs.csv` is the summarized version of nba file containing 22 nba teams who have made to the playoffs in 2014,2015,2016 seasons and their player’s game stats. The variables we are focusing on are the same as the main data file but with more restrictions to help us better analyze the stats. 
 
-**Do not** use a folder named `data`.
-This folder is reserved by `hugo`.
-If you create a folder named `data` this will cause problems.
 
-For larger datasets, you'll need to create a new folder in the project root directory named `dataset-ignore`. This will be ignored by git (based off the `.gitignore` file in the project root directory) which will help you avoid issues with Github's size limits. Your team will have to manually make sure the data files in `dataset-ignore` are synced across team members.
+A supplementary data file called `injuries_2010-2020 2.csv` is used to collect individual player’s injury condition during particular season and the goal is to combine this data file with the playoffs data to create a more comprehensive and reliable data set that can be used to explore the relationship between player’s injury and how that may affect a playoff’s team as a whole. The variables in these data files contain ‘Date’, ‘Team’, 'Relinquished’ (players who are placed on the injury list), and ‘Notes’ (information on the injury). 
 
-Your [load_and_clean_data.R](/load_and_clean_data.R) file is how you will load and clean your data. Here is a an example of a very simple one.
 
+The last data file is `combine.csv`, which is the final version of the combined dataset including playoffs and injury data. The variable ‘injuries_data’ contains the number 0 and 1 indicating if this player is injured for that particular season.
+
+
+## Data Cleaning
+
+Our [load_and_clean_data.R](/load_and_clean_data.R) file is here.
+
+### NBA Dataset
 ```{r}
-source(
-  here::here("static", "load_and_clean_data.R"),
-  echo = TRUE # Use echo=FALSE or omit it to avoid code output  
-)
+library(rvest)
+library(tidyverse)
+nba <- read_csv(here::here("dataset", "nbaNew.csv"), col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))
+
+nba_clean<- select(nba, -(blanl), -(blank2), -(`3P`), -(`3PA`),-(`3P%`))%>%
+  na_if("")%>%
+  filter(!row_number() %in% c(24625, 24626, 24627, 24628))
 ```
+We clean the NBA dataset by specifying the types of all the columns, removing blank columns, and columns and rows that contain lots of NA.
 
-Note how I use the `here::here` function from the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
-This function is used to specify directories within the project's root directory.
-You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\\MA415\\Final_Project\\`) and using `here` ensures that it doesn't matter what the current working directory is as long as you have this RStudio Project open.
+### Injury Dataset
+```{r}
+Injury <- read_csv(here::here("dataset", "injuries_2010-2020 2.csv"), col_types = cols_only(Date = col_character(), Team = col_character(), Relinquished = col_character()))
+colnames(Injury)[3] <- "PlayerName"
+colnames(Injury)[1] <- "SeasonStart"
+colnames(Injury)[2] <- "Tm"
+Injury <- Injury %>% filter(!is.na(PlayerName))
+Injury <- Injury %>% mutate(injuries_data = 1)
+Injury$SeasonStart <- substr(Injury$SeasonStart,1,4)
+Injury_clean <- Injury %>% filter(SeasonStart %in% c("2014","2015","2016"))
+```
+We clean the injury dataset by specifying the data type, deleting unnecessary column and changing the column names. We also filter out all the NA in PlayerName and add a column named “injuries_data” of all 1s for later tracking which players had injuries. We change the date to year only since our original NBA dataset doesn’t have month and day. Since we only care about data in 2014, 2015 and 2016, so we filter out other useless years.
 
-----
+### Playoffs Dataset
+```{r}
+playoffs <- nba_clean%>%
+  filter(SeasonStart%in%c("2014","2015","2016"))%>%
+  filter(Tm%in%c("IND","MIA", "TOT", "CHA", "WAS", "BRK","CHI", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL",
+                 "NOP", "CLE", "TOR", "BOS", "MIL",
+                 "DET"))
+playoffs$SeasonStart <- as.character(playoffs$SeasonStart)
+```
+Playoffs dataset is created based on nba_clean. It contains data only in 2014, 2015 and 2016. We also focus on the teams that have been in the playoffs, so we specify the teams by filtering. Then, we change the datatype of SeasonStart to be character for correct combining.
 
-
-
-## Files in static
-
-### `load_and_clean_data.R`
-
-The idea behind this file is that someone coming to your website could largely replicate your analyses after running this script on the original data sets to clean them.
-This file might create a derivative data set that you then use for your subsequent analysis.
-Note that you don't need to run this script from every post/page.
-Instead, you can load in the results of this script, which could be plain text files or `.RData` files. In your data page you'll describe how these results were created. If you have a very large data set, you might save smaller data sets that you can use for exploration purposes.
-To link to this file, you can use `[cleaning script](/load_and_clean_data.R)`. 
-
-
-When you are loading in data, I recommend using the `here::here` function to specify the file path. This function is used to specify a path relative to your project's root directory. Hence, you can read a file using eg, `read_csv(here::here("dataset/data_file.csv"))`.
-
-
-### Shiny Interactive
-
-If you are using a shiny interactive, you'll need to keep that in a separate folder (i.e. not in `static` or `content`). For the shiny interactive you'll need to publish the app on `shinyapps.io` where the app can be run. When you publish, make sure to include any data sets you are loading in among the files you publish since those datasets will need to be loaded by your app. 
-
-
-
-
-
-----
-
-## Rubric: On this page
-
-you will
-
-* Describe where/how to find data.
-  * You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.
-  * Why was the data collected/curated? Who put it together? (This is important, if you don't know why it was collected then that might not be a good dataset to look at.
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones and summarize the rest.
-* Describe any cleaning you had to do for your data.
-  * You *must* include a link to your `load_and_clean_data.R` file.
-  * Also, describe any additional R packages you used outside of those covered in class.
-  * Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.
-  * Some repetition of what you do in your `load_and_clean_data.R` file is fine and encouraged if it helps explain what you did.
-* Organization, clarity, cleanliness of the page
-  * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
+### Combine Dataset
+```{r}
+combine <- playoffs %>% left_join(Injury_clean, by = c("PlayerName","SeasonStart","Tm"))%>% 
+  mutate(injuries_data = coalesce(injuries_data, 0))
+```
+We use left join to playoffs with injury data by player name, year, and team name to get our combined dataset.
