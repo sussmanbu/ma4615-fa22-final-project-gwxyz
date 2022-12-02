@@ -10,16 +10,17 @@ draft: false
 ```{r}
 library(tidyverse)
 
-playoffs <- read_csv(here::here("dataset/playoffs.csv"))
-combine <- read_csv(here::here("dataset/combine.csv"))
+playoffs <- read_csv(here::here("dataset", "playoffs.csv"))
+combine <- read_csv(here::here("dataset", "combine.csv"))
+nba_clean <- read.csv(here::here("dataset", "nba_clean.csv"))
 load(here::here("dataset/playoffs.RData"))
 load(here::here("dataset/combine.RData"))
+load(here::here("dataset/nba_clean.RData"))
 ```
 
 
 ## Important Variable in NBA
 ```{r}
-playoffs <- read_csv("dataset/playoffs.csv")
 playoff_3team_2016 <- playoffs %>% filter(Tm %in% c("CLE","OKC","BOS")) %>% filter(SeasonStart =="2015")
 playoff_3team_2015 <- playoffs %>% filter(Tm %in% c("GSW","MEM","NOP")) %>% filter(SeasonStart =="2014")
 playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filter(SeasonStart =="2013")
@@ -122,9 +123,8 @@ playoffs %>%
 
 
 ## Modeling
-```{r}
+```{r, eval=FALSE}
 #2014
-nba_clean <- read.csv("dataset/nba_clean.csv")
 partial4<- nba_clean%>%
   filter(SeasonStart =="2013")%>%
   group_by(Tm)%>%
@@ -173,10 +173,9 @@ full6<- nba_clean%>%
 combine6 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
   mutate(playoff = coalesce(playoff, 0))
  
-install.packages("caTools")    # For Logistic regression
-install.packages("ROCR")       # For ROC curve to evaluate model
-library(caTools)
-library(ROCR) 
+library(caTools) # For Logistic regression
+library(ROCR) # For ROC curve to evaluate model
+
 logistic_model <- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
                       data = combine4, 
                       family = "binomial")
