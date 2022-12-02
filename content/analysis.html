@@ -98,9 +98,7 @@ ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
   xlim(0,500) +
   theme_minimal()</code></pre>
 <p><img src="/analysis_files/figure-html/unnamed-chunk-3-5.png" width="672" /></p>
-<p>These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.</p>
-<pre class="r"><code>library(tidyverse)
-playoffs %&gt;% 
+<pre class="r"><code>playoffs %&gt;% 
   filter(SeasonStart == &quot;2013&quot;) %&gt;% 
   filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
                  &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
