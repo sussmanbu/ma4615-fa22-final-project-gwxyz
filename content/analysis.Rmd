@@ -12,6 +12,38 @@ This comes from the file `content/analysis.Rmd`.
 We describe here our detailed data analysis.
 
 
+Point Guard: PG - Stephen Curry, Russell Westbrook
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PG") %>% 
+  ggplot() +
+  stat_summary(aes(x = AST, y = PlayerName), fun = mean, geom = "bar")
+```
+Shooting Guard: SG - Klay Tompson, James Harden
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SG") %>% 
+  ggplot() +
+  stat_summary(aes(x = `3PA`, y = PlayerName), fun = mean, geom = "bar")
+```
+Small Forward: SF - Lebron James, Kevin Durant
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SF") %>% 
+  ggplot() +
+  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = "bar")
+```
+Power Forward: PF - Serge Ibaka, Draymond Green
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PF") %>% 
+  ggplot() +
+  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = "bar")
+```
+Center: C - Dwight Howard, Hassan Whiteside
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "C") %>% 
+  ggplot() +
+  stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = "bar")
+```
+
+
 ```{r}
 library(tidyverse)
 print(getwd())
