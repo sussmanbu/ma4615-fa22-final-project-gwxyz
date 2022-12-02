@@ -7,46 +7,288 @@ featuredImage: https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithqu
 draft: false
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 <div id="TOC">
 
 </div>
 
-<p>This comes from the file <code>content/analysis.Rmd</code>.</p>
-<p>We describe here our detailed data analysis.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.6     ✓ dplyr   1.0.8
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.1.1     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>print(getwd())</code></pre>
-<pre><code>## [1] &quot;/Users/dsussman/Dropbox (Personal)/Teaching/MA_415/project_template/content&quot;</code></pre>
-<pre class="r"><code>data &lt;- read_csv(here::here(&quot;dataset/loan_refusal_clean.csv&quot;))</code></pre>
-<pre><code>## Rows: 20 Columns: 5</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>playoffs &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;playoffs.csv&quot;))</code></pre>
+<pre><code>## Rows: 1297 Columns: 52
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
-## chr (1): bank
-## dbl (4): min, white, himin, hiwhite
+## chr  (4): PlayerName, Pos, Tm, FTr
+## dbl (48): #, SeasonStart, PlayerSalary, Age, G, GS, MP, PER, TS%, 3PAr, ORB%...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>load(here::here(&quot;dataset/loan_refusal.RData&quot;))
-print(ls())</code></pre>
-<pre><code>## [1] &quot;data&quot;            &quot;loan_data_clean&quot;</code></pre>
-<div id="note-on-attribution" class="section level2">
-<h2>Note on Attribution</h2>
-<p>If you are directly quoting from a source, please make that clear. You can show quotes using <code>&gt;</code> like this</p>
-<pre><code>&gt; To be or not to be.</code></pre>
-<blockquote>
-<p>To be or not to be.</p>
-</blockquote>
-<p>Also, make sure to provide a link or citation to where you are quoting from.</p>
-<hr />
+<pre class="r"><code>combine &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;combine.csv&quot;))</code></pre>
+<pre><code>## Rows: 3576 Columns: 53
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (4): PlayerName, Pos, Tm, FTr
+## dbl (49): #, SeasonStart, PlayerSalary, Age, G, GS, MP, PER, TS%, 3PAr, ORB%...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>nba_clean &lt;- read.csv(here::here(&quot;dataset&quot;, &quot;nba_clean.csv&quot;))
+load(here::here(&quot;dataset/playoffs.RData&quot;))
+load(here::here(&quot;dataset/combine.RData&quot;))
+load(here::here(&quot;dataset/nba_clean.RData&quot;))</code></pre>
+<div id="important-variable-in-nba" class="section level2">
+<h2>Important Variable in NBA</h2>
+<pre class="r"><code>playoff_3team_2016 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;CLE&quot;,&quot;OKC&quot;,&quot;BOS&quot;)) %&gt;% filter(SeasonStart ==&quot;2015&quot;)
+playoff_3team_2015 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;GSW&quot;,&quot;MEM&quot;,&quot;NOP&quot;)) %&gt;% filter(SeasonStart ==&quot;2014&quot;)
+playoff_3team_2014 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;SAS&quot;,&quot;MEM&quot;,&quot;CHA&quot;)) %&gt;% filter(SeasonStart ==&quot;2013&quot;)
+ 
+cle&lt;- playoffs%&gt;%
+  filter(Tm==&quot;CLE&quot;)%&gt;%
+  filter(SeasonStart ==&quot;2015&quot;)
+sas&lt;- playoffs%&gt;%
+  filter(Tm==&quot;SAS&quot;)%&gt;%
+  filter(SeasonStart ==&quot;2015&quot;)
+ 
+hist(cle$`TS%`,freq = FALSE)
+lines(density(cle$`TS%`), lwd = 2, col = &#39;red&#39;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># We plot a line over the histogram to show the density.
+ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
+  geom_histogram(binwidth = 5, alpha=0.5, position=&quot;identity&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code># We can also plot three histograms for three teams into one graph
+# Based on the lines and histograms, we can combine different teams&#39; data into one graph for clear comparison</code></pre>
+<pre class="r"><code># TS% of BOS, CLE, OKC for 2016 season
+ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(35,80) +
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Removed 5 rows containing non-finite values (`stat_density()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># 3P% of BOS, CLE, OKC for 2016 season
+ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,0.75) +
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Removed 9 rows containing non-finite values (`stat_density()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code># TRB of GSW, MEM, NOP for 2015 season
+ggplot(data=playoff_3team_2015, aes(x=TRB, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,1000) +
+  theme_minimal()</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code># PTS of GSW, MEM, NOP for 2015 season
+ggplot(data=playoff_3team_2015, aes(x=PTS, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,2000) +
+  theme_minimal()</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<pre class="r"><code># AST of CHA, MEM, SAS for 2014 season
+ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,500) +
+  theme_minimal()</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-5.png" width="672" /></p>
+<p>These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.</p>
+<pre class="r"><code>library(tidyverse)
+playoffs %&gt;% 
+  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `TS%`), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (`stat_summary()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>playoffs %&gt;% 
+  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `AST`), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>playoffs %&gt;% 
+  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `PER`), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (`stat_summary()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<pre class="r"><code>combine %&gt;% 
+  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `injuries_data`), fun = sum, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+<pre class="r"><code>playoffs %&gt;% 
+  filter(SeasonStart == &quot;2014&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;CLE&quot;,&quot;BOS&quot;, &quot;TOR&quot;, &quot;NOP&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;MIL&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;%
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `BLK`), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-5.png" width="672" /></p>
+<pre class="r"><code>playoffs %&gt;% 
+  filter(SeasonStart == &quot;2015&quot;) %&gt;% 
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;CLE&quot;, &quot;DET&quot;,&quot;BOS&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
+                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `3P%`), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<pre><code>## Warning: Removed 36 rows containing non-finite values (`stat_summary()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-6.png" width="672" /></p>
+</div>
+<div id="modeling" class="section level2">
+<h2>Modeling</h2>
+<pre class="r"><code>#2014
+partial4&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2013&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%&gt;%
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;))%&gt;%
+  mutate(playoff = 1)
+full4&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2013&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))  
+combine4 &lt;- full %&gt;% left_join(partial, by = c(&quot;Tm&quot;,&quot;mean_per&quot;,&quot;mean_trb&quot;,&quot;mean_ast&quot;,&quot;mean_ts&quot;, &quot;mean_blk&quot;, &quot;mean_3p&quot;))%&gt;% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+#2015
+partial5&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2014&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%&gt;%
+  filter(Tm%in%c(&quot;CLE&quot;,&quot;BOS&quot;, &quot;TOR&quot;, &quot;NOP&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;MIL&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;))%&gt;%
+  mutate(playoff = 1)
+full5&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2014&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+ 
+combine5 &lt;- full %&gt;% left_join(partial, by = c(&quot;Tm&quot;,&quot;mean_per&quot;,&quot;mean_trb&quot;,&quot;mean_ast&quot;,&quot;mean_ts&quot;, &quot;mean_blk&quot;, &quot;mean_3p&quot;))%&gt;% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+#2016
+partial6&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2015&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%&gt;%
+  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;CLE&quot;, &quot;DET&quot;,&quot;BOS&quot;, &quot;ATL&quot;,&quot;SAS&quot;,&quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;))%&gt;%
+  mutate(playoff = 1)
+full6&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2015&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+combine6 &lt;- full %&gt;% left_join(partial, by = c(&quot;Tm&quot;,&quot;mean_per&quot;,&quot;mean_trb&quot;,&quot;mean_ast&quot;,&quot;mean_ts&quot;, &quot;mean_blk&quot;, &quot;mean_3p&quot;))%&gt;% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+library(caTools) # For Logistic regression
+library(ROCR) # For ROC curve to evaluate model
+
+logistic_model &lt;- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
+                      data = combine4, 
+                      family = &quot;binomial&quot;)
+logistic_model
+summary(logistic_model)
+ 
+# Predict test data based on model
+predict_reg &lt;- predict(logistic_model, 
+                       combine, type = &quot;response&quot;)
+predict_reg  
+ 
+# ROC-AUC Curve
+ROCPred &lt;- prediction(predict_reg, combine$playoff) 
+ROCPer &lt;- performance(ROCPred, measure = &quot;tpr&quot;, 
+                      x.measure = &quot;fpr&quot;)
+auc &lt;- performance(ROCPred, measure = &quot;auc&quot;)
+auc &lt;- auc@y.values[[1]]
+auc
+plot(ROCPer)
+plot(ROCPer, colorize = TRUE, 
+     print.cutoffs.at = seq(0.1, by = 0.1), 
+     main = &quot;ROC CURVE&quot;)
+abline(a = 0, b = 1)
+auc &lt;- round(auc, 4)
+legend(.6, .4, auc, title = &quot;AUC&quot;, cex = 1)
+ 
+#prediction for 2017
+full7&lt;- nba_clean%&gt;%
+  filter(SeasonStart ==&quot;2016&quot;)%&gt;%
+  group_by(Tm)%&gt;%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+predict_reg &lt;- predict(logistic_model, 
+                       full7, type = &quot;response&quot;)
+predict_reg
+# teams that are potential to make into playoffs
+#ALT,BOS,BRK,CLE,DAL,DET,HOU,IND,LAL,MIN,NOP,ORL,PHO,POR,SAC,SAS,GSW
+ 
+#We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.</code></pre>
+</div>
+<div id="explanation" class="section level2">
+<h2>Explanation</h2>
+<p>Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.</p>
+</div>
+<div id="further-evaulation" class="section level2">
+<h2>Further Evaulation</h2>
+<p>We analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench.
+Point Guard is responsible for assist, passer and ball handler. Who are expected to have exceptional passing skills, ball-handling skills, make assists and play good defense against the opposing point guard. And are often valued more for their assist totals than for their scoring. So we choose “AST” to analyze “Point Guard”
+Shooting Guard’s main objective is to score points for their team and steal the ball on defense. Who are known for making shots from beyond the three-point line and being one of the primary players responsible for stealing balls on defense. So we choose “3PA” to analyze “Shooting Guard”.
+Small Forward is responsible for scoring points and defending, and often are secondary or tertiary rebounders behind the power forward and center. So we choose “PTS” to analyze “Small Forward”.
+Power Forward is responsible for rebounding, blocking shots and defending the post, and occasionally shooting. So we choose “BLK” to analyze “Power Forward”.
+Center is the most important position, as he is the last line of defense against people driving towards the basket. And they are responsible for close shots and rebounds on offense and try to block opponents’ shots and rebound their misses on defense. So we choose “ORB” to analyze “Center”.</p>
+<p>Starting-Lineup
+Point Guard: PG - Stephen Curry
+Shooting Guard: SG - Klay Tompson
+Small Forward: SF - Lebron James
+Power Forward: PF - Serge Ibaka
+Center: C - Dwight Howard
+Substitute Bench
+Point Guard: PG - Russell Westbrook
+Shooting Guard: SG - James Harden
+Small Forward: SF - Kevin Durant
+Power Forward: PF - Draymond Green
+Center: C - Hassan Whiteside</p>
+<p>Point Guard: PG - Stephen Curry, Russell Westbrook</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;PG&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = AST, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Shooting Guard: SG - Klay Tompson, James Harden</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;SG&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = `3PA`, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Small Forward: SF - Lebron James, Kevin Durant</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;SF&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Power Forward: PF - Serge Ibaka, Draymond Green</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;PF&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Center: C - Dwight Howard, Hassan Whiteside</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;C&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="rubric-on-this-page" class="section level2">
 <h2>Rubric: On this page</h2>

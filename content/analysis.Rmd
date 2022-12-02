@@ -7,32 +7,283 @@ featuredImage: https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithqu
 draft: false
 ---
 
-This comes from the file `content/analysis.Rmd`.
-
-We describe here our detailed data analysis.
-
-
 ```{r}
 library(tidyverse)
-print(getwd())
-data <- read_csv(here::here("dataset/loan_refusal_clean.csv"))
-load(here::here("dataset/loan_refusal.RData"))
-print(ls())
+
+playoffs <- read_csv(here::here("dataset/playoffs.csv"))
+combine <- read_csv(here::here("dataset/combine.csv"))
+load(here::here("dataset/playoffs.RData"))
+load(here::here("dataset/combine.RData"))
 ```
 
-## Note on Attribution
 
-If you are directly quoting from a source, please make that clear. You can show quotes using `>` like this
+## Important Variable in NBA
+```{r}
+playoffs <- read_csv("dataset/playoffs.csv")
+playoff_3team_2016 <- playoffs %>% filter(Tm %in% c("CLE","OKC","BOS")) %>% filter(SeasonStart =="2015")
+playoff_3team_2015 <- playoffs %>% filter(Tm %in% c("GSW","MEM","NOP")) %>% filter(SeasonStart =="2014")
+playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filter(SeasonStart =="2013")
+ 
+cle<- playoffs%>%
+  filter(Tm=="CLE")%>%
+  filter(SeasonStart =="2015")
+sas<- playoffs%>%
+  filter(Tm=="SAS")%>%
+  filter(SeasonStart =="2015")
+ 
+hist(cle$`TS%`,freq = FALSE)
+lines(density(cle$`TS%`), lwd = 2, col = 'red')
+# We plot a line over the histogram to show the density.
+ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
+  geom_histogram(binwidth = 5, alpha=0.5, position="identity") +
+  theme_minimal()
+# We can also plot three histograms for three teams into one graph
+# Based on the lines and histograms, we can combine different teams' data into one graph for clear comparison
+```
+
+```{r}
+# TS% of BOS, CLE, OKC for 2016 season
+ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(35,80) +
+  theme_minimal()
+ 
+# 3P% of BOS, CLE, OKC for 2016 season
+ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,0.75) +
+  theme_minimal()
+ 
+# TRB of GSW, MEM, NOP for 2015 season
+ggplot(data=playoff_3team_2015, aes(x=TRB, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,1000) +
+  theme_minimal()
+ 
+# PTS of GSW, MEM, NOP for 2015 season
+ggplot(data=playoff_3team_2015, aes(x=PTS, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,2000) +
+  theme_minimal()
+ 
+# AST of CHA, MEM, SAS for 2014 season
+ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(0,500) +
+  theme_minimal()
+```
+
+
+These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.
+```{r}
+library(tidyverse)
+playoffs %>% 
+  filter(SeasonStart == "2013") %>% 
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
+                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `TS%`), fun = mean, geom = "bar")
+ 
+playoffs %>% 
+  filter(SeasonStart == "2013") %>% 
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
+                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `AST`), fun = mean, geom = "bar")
+ 
+playoffs %>% 
+  filter(SeasonStart == "2013") %>% 
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
+                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `PER`), fun = mean, geom = "bar")
+ 
+combine %>% 
+  filter(SeasonStart == "2013") %>% 
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
+                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `injuries_data`), fun = sum, geom = "bar")
+ 
+playoffs %>% 
+  filter(SeasonStart == "2014") %>% 
+  filter(Tm%in%c("CLE","BOS", "TOR", "NOP", "WAS", "BRK","CHI", "ATL","SAS",
+                 "MIL","LAC","HOU","POR","GSW","MEM","DAL")) %>%
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `BLK`), fun = mean, geom = "bar")
+ 
+playoffs %>% 
+  filter(SeasonStart == "2015") %>% 
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "CLE", "DET","BOS", "ATL","SAS",
+                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
+  ggplot() +
+  stat_summary(aes(x = Tm, y = `3P%`), fun = mean, geom = "bar")
+```
+
+
+## Modeling
+```{r}
+#2014
+nba_clean <- read.csv("dataset/nba_clean.csv")
+partial4<- nba_clean%>%
+  filter(SeasonStart =="2013")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%>%
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL"))%>%
+  mutate(playoff = 1)
+full4<- nba_clean%>%
+  filter(SeasonStart =="2013")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))  
+combine4 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+#2015
+partial5<- nba_clean%>%
+  filter(SeasonStart =="2014")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%>%
+  filter(Tm%in%c("CLE","BOS", "TOR", "NOP", "WAS", "BRK","CHI", "ATL","SAS","MIL","LAC","HOU","POR","GSW","MEM","DAL"))%>%
+  mutate(playoff = 1)
+full5<- nba_clean%>%
+  filter(SeasonStart =="2014")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+ 
+combine5 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+#2016
+partial6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))%>%
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "CLE", "DET","BOS", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL"))%>%
+  mutate(playoff = 1)
+full6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+combine6 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+  mutate(playoff = coalesce(playoff, 0))
+ 
+install.packages("caTools")    # For Logistic regression
+install.packages("ROCR")       # For ROC curve to evaluate model
+library(caTools)
+library(ROCR) 
+logistic_model <- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
+                      data = combine4, 
+                      family = "binomial")
+logistic_model
+summary(logistic_model)
+ 
+# Predict test data based on model
+predict_reg <- predict(logistic_model, 
+                       combine, type = "response")
+predict_reg  
+ 
+# ROC-AUC Curve
+ROCPred <- prediction(predict_reg, combine$playoff) 
+ROCPer <- performance(ROCPred, measure = "tpr", 
+                      x.measure = "fpr")
+auc <- performance(ROCPred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+plot(ROCPer)
+plot(ROCPer, colorize = TRUE, 
+     print.cutoffs.at = seq(0.1, by = 0.1), 
+     main = "ROC CURVE")
+abline(a = 0, b = 1)
+auc <- round(auc, 4)
+legend(.6, .4, auc, title = "AUC", cex = 1)
+ 
+#prediction for 2017
+full7<- nba_clean%>%
+  filter(SeasonStart =="2016")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+predict_reg <- predict(logistic_model, 
+                       full7, type = "response")
+predict_reg
+# teams that are potential to make into playoffs
+#ALT,BOS,BRK,CLE,DAL,DET,HOU,IND,LAL,MIN,NOP,ORL,PHO,POR,SAC,SAS,GSW
+ 
+#We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.
 
 ```
-> To be or not to be.
+
+## Explanation
+Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.
+
+
+## Further Evaulation
+We analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench. 
+Point Guard is responsible for assist, passer and ball handler. Who are expected to have exceptional passing skills, ball-handling skills, make assists and play good defense against the opposing point guard. And are often valued more for their assist totals than for their scoring. So we choose “AST” to analyze “Point Guard”
+Shooting Guard’s main objective is to score points for their team and steal the ball on defense. Who are known for making shots from beyond the three-point line and being one of the primary players responsible for stealing balls on defense. So we choose “3PA” to analyze “Shooting Guard”.
+Small Forward is responsible for scoring points and defending, and often are secondary or tertiary rebounders behind the power forward and center. So we choose “PTS” to analyze “Small Forward”.
+Power Forward is responsible for rebounding, blocking shots and defending the post, and occasionally shooting. So we choose “BLK” to analyze “Power Forward”.
+Center is the most important position, as he is the last line of defense against people driving towards the basket. And they are responsible for close shots and rebounds on offense and try to block opponents’ shots and rebound their misses on defense. So we choose “ORB” to analyze “Center”. 
+ 
+Starting-Lineup
+Point Guard: PG - Stephen Curry
+Shooting Guard: SG - Klay Tompson
+Small Forward: SF - Lebron James
+Power Forward: PF - Serge Ibaka
+Center: C - Dwight Howard
+Substitute Bench
+Point Guard: PG - Russell Westbrook
+Shooting Guard: SG - James Harden
+Small Forward: SF - Kevin Durant
+Power Forward: PF - Draymond Green
+Center: C - Hassan Whiteside
+
+Point Guard: PG - Stephen Curry, Russell Westbrook
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PG") %>% 
+  ggplot() +
+  stat_summary(aes(x = AST, y = PlayerName), fun = mean, geom = "bar")
 ```
 
-> To be or not to be.
 
-Also, make sure to provide a link or citation to where you are quoting from.
+Shooting Guard: SG - Klay Tompson, James Harden
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SG") %>% 
+  ggplot() +
+  stat_summary(aes(x = `3PA`, y = PlayerName), fun = mean, geom = "bar")
+```
 
--------
+
+Small Forward: SF - Lebron James, Kevin Durant
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SF") %>% 
+  ggplot() +
+  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = "bar")
+```
+
+
+Power Forward: PF - Serge Ibaka, Draymond Green
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PF") %>% 
+  ggplot() +
+  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = "bar")
+```
+
+
+Center: C - Dwight Howard, Hassan Whiteside
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "C") %>% 
+  ggplot() +
+  stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = "bar")
+```
+
+
 
 
 ## Rubric: On this page
