@@ -123,7 +123,7 @@ playoffs %>%
 
 
 ## Modeling
-```{r, eval=FALSE}
+```{r}
 #2014
 partial4<- nba_clean%>%
   filter(SeasonStart =="2013")%>%
@@ -137,9 +137,9 @@ full4<- nba_clean%>%
   group_by(Tm)%>%
   summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
             mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))  
-combine4 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+combine4 <- full4 %>% left_join(partial4, by = c("Tm"="Tm","mean_per"="mean_per","mean_trb"="mean_trb","mean_ast"="mean_ast","mean_ts"="mean_ts", "mean_blk"="mean_blk", "mean_3p"="mean_3p"))%>% 
   mutate(playoff = coalesce(playoff, 0))
- 
+
 #2015
 partial5<- nba_clean%>%
   filter(SeasonStart =="2014")%>%
@@ -154,9 +154,9 @@ full5<- nba_clean%>%
   summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
             mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
  
-combine5 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+combine5 <- full5 %>% left_join(partial5, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
   mutate(playoff = coalesce(playoff, 0))
- 
+
 #2016
 partial6<- nba_clean%>%
   filter(SeasonStart =="2015")%>%
@@ -170,12 +170,12 @@ full6<- nba_clean%>%
   group_by(Tm)%>%
   summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
             mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
-combine6 <- full %>% left_join(partial, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
+combine6 <- full6 %>% left_join(partial6, by = c("Tm","mean_per","mean_trb","mean_ast","mean_ts", "mean_blk", "mean_3p"))%>% 
   mutate(playoff = coalesce(playoff, 0))
- 
+
 library(caTools) # For Logistic regression
 library(ROCR) # For ROC curve to evaluate model
-
+#model for 2014
 logistic_model <- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
                       data = combine4, 
                       family = "binomial")
@@ -184,17 +184,65 @@ summary(logistic_model)
  
 # Predict test data based on model
 predict_reg <- predict(logistic_model, 
-                       combine, type = "response")
+                       combine4, type = "response")
 predict_reg  
  
 # ROC-AUC Curve
-ROCPred <- prediction(predict_reg, combine$playoff) 
+ROCPred <- prediction(predict_reg, combine4$playoff) 
 ROCPer <- performance(ROCPred, measure = "tpr", 
                       x.measure = "fpr")
 auc <- performance(ROCPred, measure = "auc")
 auc <- auc@y.values[[1]]
 auc
-plot(ROCPer)
+plot(ROCPer, colorize = TRUE, 
+     print.cutoffs.at = seq(0.1, by = 0.1), 
+     main = "ROC CURVE")
+abline(a = 0, b = 1)
+auc <- round(auc, 4)
+legend(.6, .4, auc, title = "AUC", cex = 1)
+#model for 2015
+logistic_model <- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
+                      data = combine5, 
+                      family = "binomial")
+logistic_model
+summary(logistic_model)
+ 
+# Predict test data based on model
+predict_reg <- predict(logistic_model, 
+                       combine5, type = "response")
+predict_reg  
+ 
+# ROC-AUC Curve
+ROCPred <- prediction(predict_reg, combine5$playoff) 
+ROCPer <- performance(ROCPred, measure = "tpr", 
+                      x.measure = "fpr")
+auc <- performance(ROCPred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+plot(ROCPer, colorize = TRUE, 
+     print.cutoffs.at = seq(0.1, by = 0.1), 
+     main = "ROC CURVE")
+abline(a = 0, b = 1)
+auc <- round(auc, 4)
+legend(.6, .4, auc, title = "AUC", cex = 1)
+#model for 2016
+logistic_model <- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
+                      data = combine6, 
+                      family = "binomial")
+logistic_model
+summary(logistic_model)
+# Predict test data based on model
+predict_reg <- predict(logistic_model, 
+                       combine6, type = "response")
+predict_reg  
+ 
+# ROC-AUC Curve
+ROCPred <- prediction(predict_reg, combine6$playoff) 
+ROCPer <- performance(ROCPred, measure = "tpr", 
+                      x.measure = "fpr")
+auc <- performance(ROCPred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
 plot(ROCPer, colorize = TRUE, 
      print.cutoffs.at = seq(0.1, by = 0.1), 
      main = "ROC CURVE")
@@ -206,17 +254,16 @@ legend(.6, .4, auc, title = "AUC", cex = 1)
 full7<- nba_clean%>%
   filter(SeasonStart =="2016")%>%
   group_by(Tm)%>%
-  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),
-            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE),mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE))
 predict_reg <- predict(logistic_model, 
                        full7, type = "response")
 predict_reg
 # teams that are potential to make into playoffs
 #ALT,BOS,BRK,CLE,DAL,DET,HOU,IND,LAL,MIN,NOP,ORL,PHO,POR,SAC,SAS,GSW
  
-#We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.
-
 ```
+## Model
+We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.
 
 ## Explanation
 Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.
