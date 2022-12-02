@@ -76,6 +76,8 @@ ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
 
 ```{r}
 
+#These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.
+
 playoffs %>% 
   filter(SeasonStart == "2013") %>% 
   filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
@@ -279,8 +281,6 @@ playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL
   ggplot() +
   stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = "bar")
 ```
-
-
 
 
 ## Rubric: On this page
