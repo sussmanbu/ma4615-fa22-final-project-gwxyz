@@ -13,20 +13,19 @@ The members of this team are below.
 
 
 ## Jingxuan (Krystal) Guo
-Jingxuan(Krystal) Guo
+I'm a senior BA/MA student major in Pure/Applied Mathematics, Computer Science and Economics.
 
 ## Duoyifu Xu
-
-Duoyifu Xu
+I'm a senior student major in Pure/Applied Mathematics, Economics
 
 ## Yang Zhou
-Yang Zhou
+I'm a senior student major in Statistics and Computer Science.
 
 ## Ruiqing Yang
-Student
+I'm a master student major in Statistics.
 
 ## Zhiyue Wu
-Zhiyue Wu
+I'm a senior student major in Biology and minor in Statistics.
 
 <!-- Please leave in the information below -->
 
