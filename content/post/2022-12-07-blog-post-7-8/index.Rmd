@@ -1,0 +1,31 @@
+---
+title: blog post 7 & 8
+author: Daniel Sussman
+date: '2022-12-07'
+slug: []
+categories: []
+tags: []
+description: ~
+toc: yes
+authors: []
+series: []
+lastmod: '2022-12-07T23:10:37-05:00'
+featuredVideo: ~
+featuredImage: ~
+---
+
+## Continuing EDA
+
+Our data analysis started with exploring relationships between individual variables and looking for any potential dependencies between variables. After we decided our tentative thesis, we shifted our focus onto the relationship between each variable and their impact on the team's success. In order to find the best variables that can successfully predict the competence of a certain team, we created a logistic regression to include every variable we think that’s most important and observe any significant predictors. One problem is that there are many variables, if we put all predictors in at the same time, we cannot know which predictor actually has significant distribution. To fix this issue, we will start to build the model using the AIC method which adds predictor variables one at a time and that way we can build the best model and obtain the most significant variables to support our thesis statement.
+
+## Tentative Thesis
+
+Our tentative thesis is to find the top 5 related variables of a player's performance which the NBA Championship mainly depends on. To further validate our thesis, we also decide to find the best starting line-up and substitute bench using the predictor variables that we obtained from our model. If the player’s list corresponds to the actual NBA lineup, then our model is reliable. 
+
+
+## Polishing Visualizations
+
+We use both histograms with line-shaped and bar charts to visualize data. Histograms: For a specific year and a variable, we randomly choose two teams that are made into the playoffs with the champion team to show the density curve on histogram. The x-axis is the variable and the y-axis is the density curve. 
+Bar charts: For a specific year and variable, we compare the data for all the teams in a descending order to see whether the variable largely affects the winning of championship. The x-axis is the team name and y-axis is the variable name.
+For both types of graphs, we clearly state the axis labels and avoid abbreviations. We also add the title of every plot to make it easy to read. In order to be informative, we add an explanation after every plot and make a conclusive statement for all the graphs. 
+We do the same steps for further evaluation in the analysis page.
