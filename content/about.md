@@ -19,7 +19,7 @@ I'm a senior BA/MA student major in Pure/Applied Mathematics, Computer Science a
 I'm a senior student major in Pure/Applied Mathematics, Economics
 
 ## Yang Zhou
-I'm a senior student major in Statistics and Computer Science.
+I'm a senior student major in Pure/Applied Mathematics and Computer Science.
 
 ## Ruiqing Yang
 I'm a master student major in Statistics.
