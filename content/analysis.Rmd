@@ -7,7 +7,7 @@ featuredImage: /images/nba_analysis.png
 draft: false
 ---
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 
 playoffs <- read_csv(here::here("dataset", "playoffs.csv"))
@@ -16,110 +16,103 @@ nba_clean <- read.csv(here::here("dataset", "nba_clean.csv"))
 load(here::here("dataset/playoffs.RData"))
 load(here::here("dataset/combine.RData"))
 load(here::here("dataset/nba_clean.RData"))
-```
-
-
-## Important Variable in NBA
-```{r}
 playoff_3team_2016 <- playoffs %>% filter(Tm %in% c("CLE","OKC","BOS")) %>% filter(SeasonStart =="2015")
 playoff_3team_2015 <- playoffs %>% filter(Tm %in% c("GSW","MEM","NOP")) %>% filter(SeasonStart =="2014")
 playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filter(SeasonStart =="2013")
- 
-cle<- playoffs%>%
-  filter(Tm=="CLE")%>%
-  filter(SeasonStart =="2015")
-sas<- playoffs%>%
-  filter(Tm=="SAS")%>%
-  filter(SeasonStart =="2015")
- 
-hist(cle$`TS%`,freq = FALSE)
-lines(density(cle$`TS%`), lwd = 2, col = 'red')
-# We plot a line over the histogram to show the density.
-ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
-  geom_histogram(binwidth = 5, alpha=0.5, position="identity") +
-  theme_minimal()
-# We can also plot three histograms for three teams into one graph
-# Based on the lines and histograms, we can combine different teams' data into one graph for clear comparison
 ```
+## Motivation and Initial Questions
 
-```{r}
-# TS% of BOS, CLE, OKC for 2016 season
-ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
+abcd
+
+## Important Variable in NBA
+
+```{r,echo=FALSE}
+ggplot(data=playoff_3team_2014, aes(x=STL, fill=Tm)) +
   geom_density(alpha=0.5) +
-  xlim(35,80) +
-  theme_minimal()
+  xlim(0,250) +
+  theme_minimal()+
+  labs(x="Steals",title="STL of CHA, MEM, SAS for 2014 season",fill = "Team")
+```
+The graph shows that SAS had a higher steal mean and median than MEM and CHA. That might contribute to winning the championship.
  
-# 3P% of BOS, CLE, OKC for 2016 season
-ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,0.75) +
-  theme_minimal()
  
-# TRB of GSW, MEM, NOP for 2015 season
-ggplot(data=playoff_3team_2015, aes(x=TRB, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,1000) +
-  theme_minimal()
- 
-# PTS of GSW, MEM, NOP for 2015 season
-ggplot(data=playoff_3team_2015, aes(x=PTS, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,2000) +
-  theme_minimal()
- 
-# AST of CHA, MEM, SAS for 2014 season
+```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
   geom_density(alpha=0.5) +
-  xlim(0,500) +
-  theme_minimal()
+  xlim(-100,400) +
+  theme_minimal()+
+  labs(x="Assists",title="AST of CHA, MEM, SAS for 2014 season",fill = "Team")
 ```
+Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship.
+ 
+ 
+```{r,echo=FALSE}
+ggplot(data=playoff_3team_2014, aes(x=VORP, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(-3,8) +
+  theme_minimal() +
+  labs(x="Value over Placement Player",title="VORP of CHA, MEM, SAS for 2014 season",fill = "Team")
+```
+Players in SAS had a relatively higher VORP than other players. Many of them earned 3, while players in CHA and MEM earned only about 0 and 1. It clearly shows that there are more valuable players in SAS, and that may be why it winned the championship.
+ 
+ 
+```{r, echo=FALSE}
+ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
+  geom_density(alpha=0.5) +
+  xlim(-0.3,0.8) +
+  theme_minimal()+
+  labs(x="3 Points Percentage",title="3P% of BOS, CLE, OKC for 2016 season",fill = "Team")
+```
+In 2016, the 3 points percentage mean and median were higher for players in CLE than in BOS and OKC, which made 3P% a useful index to be evaluated.
 
-```{r}
 
-#These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.
-
+```{r, echo = FALSE}
 playoffs %>% 
   filter(SeasonStart == "2013") %>% 
   filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
                  "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
   ggplot() +
-  stat_summary(aes(x = Tm, y = `TS%`), fun = mean, geom = "bar")
+  stat_summary(aes(x = reorder(Tm, STL, decreasing = TRUE, na.rm = TRUE), y = STL), fun = mean, geom = "bar", na.rm = TRUE) +
+  labs(title = "Average Steals of Playoffs Teams in 2013", x = "Team", y = "Steals")
+```
+This bar chart shows the average steals for each team in the 2013-2014 playoffs. We can see the champion team SAS get the second greatest average steals, which shows the average level of the SAS players is high this year. This also proves to us that STL is an important variable in our model.
  
+ 
+```{r, echo = FALSE} 
 playoffs %>% 
   filter(SeasonStart == "2013") %>% 
   filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
                  "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
   ggplot() +
-  stat_summary(aes(x = Tm, y = `AST`), fun = mean, geom = "bar")
+  stat_summary(aes(x = reorder(Tm, AST, decreasing = TRUE, na.rm = TRUE), y = AST), fun = mean, geom = "bar", na.rm = TRUE) +
+  labs(title = "Average Assists of Playoffs Teams in 2013", x = "Team", y = "Assists")
+```
+This bar chart shows the average assists for each team in the 2013-2014 playoffs. The champion team SAS got the second greatest average assists, which also proves to us that AST is an important variable in our consideration.
  
+ 
+```{r, echo = FALSE} 
 playoffs %>% 
   filter(SeasonStart == "2013") %>% 
   filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
                  "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
   ggplot() +
-  stat_summary(aes(x = Tm, y = `PER`), fun = mean, geom = "bar")
+  stat_summary(aes(x = reorder(Tm, VORP, decreasing = TRUE, na.rm = TRUE), y = VORP), fun = mean, geom = "bar", na.rm = TRUE) +
+  labs(title = "Average Value over Placement Player of Playoffs Teams in 2013", x = "Team", y = "Value over Placement Player")
+```
+This bar chart shows the average value over placement player for each team in the 2013-2014 playoffs. The champion team SAS got the third greatest average value over placement player, which means that the players in that team this year are very good and valuable, and that also shows us that VORP is an important variable in our consideration.
  
-combine %>% 
-  filter(SeasonStart == "2013") %>% 
-  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
-                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `injuries_data`), fun = sum, geom = "bar")
  
+```{r, echo = FALSE} 
 playoffs %>% 
   filter(SeasonStart == "2014") %>% 
   filter(Tm%in%c("CLE","BOS", "TOR", "NOP", "WAS", "BRK","CHI", "ATL","SAS",
                  "MIL","LAC","HOU","POR","GSW","MEM","DAL")) %>%
   ggplot() +
-  stat_summary(aes(x = Tm, y = `BLK`), fun = mean, geom = "bar")
- 
-playoffs %>% 
-  filter(SeasonStart == "2015") %>% 
-  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "CLE", "DET","BOS", "ATL","SAS",
-                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `3P%`), fun = mean, geom = "bar")
+  stat_summary(aes(x = reorder(Tm, BLK, decreasing = TRUE, na.rm = TRUE), y = BLK), fun = mean, geom = "bar", na.rm = TRUE) + 
+  labs(title = "Average Blocked Shots of Playoffs Teams in 2014",x = "Team", y = "Blocked Shots")
 ```
+This chart presents the average blocked shots of Playoffs teams in 2014-2015. The champion GSW also gets a higher blocked shots than most of the other teams.
+
 
 
 ## Modeling

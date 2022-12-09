@@ -12,26 +12,23 @@ draft: false
 
 </div>
 
-<pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.4 
+## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
 ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
 ## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.2      ✔ forcats 0.5.2 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>playoffs &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;playoffs.csv&quot;))</code></pre>
-<pre><code>## Rows: 1297 Columns: 52
+## ✖ dplyr::lag()    masks stats::lag()
+## Rows: 1297 Columns: 52
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (4): PlayerName, Pos, Tm, FTr
 ## dbl (48): #, SeasonStart, PlayerSalary, Age, G, GS, MP, PER, TS%, 3PAr, ORB%...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>combine &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;combine.csv&quot;))</code></pre>
-<pre><code>## Rows: 3576 Columns: 53
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 3576 Columns: 53
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (4): PlayerName, Pos, Tm, FTr
@@ -39,112 +36,30 @@ draft: false
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>nba_clean &lt;- read.csv(here::here(&quot;dataset&quot;, &quot;nba_clean.csv&quot;))
-load(here::here(&quot;dataset/playoffs.RData&quot;))
-load(here::here(&quot;dataset/combine.RData&quot;))
-load(here::here(&quot;dataset/nba_clean.RData&quot;))</code></pre>
+<div id="motivation-and-initial-questions" class="section level2">
+<h2>Motivation and Initial Questions</h2>
+<p>abcd</p>
+</div>
 <div id="important-variable-in-nba" class="section level2">
 <h2>Important Variable in NBA</h2>
-<pre class="r"><code>playoff_3team_2016 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;CLE&quot;,&quot;OKC&quot;,&quot;BOS&quot;)) %&gt;% filter(SeasonStart ==&quot;2015&quot;)
-playoff_3team_2015 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;GSW&quot;,&quot;MEM&quot;,&quot;NOP&quot;)) %&gt;% filter(SeasonStart ==&quot;2014&quot;)
-playoff_3team_2014 &lt;- playoffs %&gt;% filter(Tm %in% c(&quot;SAS&quot;,&quot;MEM&quot;,&quot;CHA&quot;)) %&gt;% filter(SeasonStart ==&quot;2013&quot;)
- 
-cle&lt;- playoffs%&gt;%
-  filter(Tm==&quot;CLE&quot;)%&gt;%
-  filter(SeasonStart ==&quot;2015&quot;)
-sas&lt;- playoffs%&gt;%
-  filter(Tm==&quot;SAS&quot;)%&gt;%
-  filter(SeasonStart ==&quot;2015&quot;)
- 
-hist(cle$`TS%`,freq = FALSE)
-lines(density(cle$`TS%`), lwd = 2, col = &#39;red&#39;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<pre class="r"><code># We plot a line over the histogram to show the density.
-ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
-  geom_histogram(binwidth = 5, alpha=0.5, position=&quot;identity&quot;) +
-  theme_minimal()</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<pre class="r"><code># We can also plot three histograms for three teams into one graph
-# Based on the lines and histograms, we can combine different teams&#39; data into one graph for clear comparison</code></pre>
-<pre class="r"><code># TS% of BOS, CLE, OKC for 2016 season
-ggplot(data=playoff_3team_2016, aes(x=`TS%`, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(35,80) +
-  theme_minimal()</code></pre>
-<pre><code>## Warning: Removed 5 rows containing non-finite values (`stat_density()`).</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code># 3P% of BOS, CLE, OKC for 2016 season
-ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,0.75) +
-  theme_minimal()</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+The graph shows that SAS had a higher steal mean and median than MEM and CHA. That might contribute to winning the championship.</p>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (`stat_density()`).</code></pre>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship.</p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+Players in SAS had a relatively higher VORP than other players. Many of them earned 3, while players in CHA and MEM earned only about 0 and 1. It clearly shows that there are more valuable players in SAS, and that may be why it winned the championship.</p>
 <pre><code>## Warning: Removed 9 rows containing non-finite values (`stat_density()`).</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<pre class="r"><code># TRB of GSW, MEM, NOP for 2015 season
-ggplot(data=playoff_3team_2015, aes(x=TRB, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,1000) +
-  theme_minimal()</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
-<pre class="r"><code># PTS of GSW, MEM, NOP for 2015 season
-ggplot(data=playoff_3team_2015, aes(x=PTS, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,2000) +
-  theme_minimal()</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
-<pre class="r"><code># AST of CHA, MEM, SAS for 2014 season
-ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
-  geom_density(alpha=0.5) +
-  xlim(0,500) +
-  theme_minimal()</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-3-5.png" width="672" /></p>
-<pre class="r"><code>#These are bar charts for some important variables for each team in every year. Most champion teams did great in these parts.
-
-playoffs %&gt;% 
-  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `TS%`), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<pre><code>## Warning: Removed 3 rows containing non-finite values (`stat_summary()`).</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>playoffs %&gt;% 
-  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `AST`), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-<pre class="r"><code>playoffs %&gt;% 
-  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `PER`), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (`stat_summary()`).</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
-<pre class="r"><code>combine %&gt;% 
-  filter(SeasonStart == &quot;2013&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `injuries_data`), fun = sum, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
-<pre class="r"><code>playoffs %&gt;% 
-  filter(SeasonStart == &quot;2014&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;CLE&quot;,&quot;BOS&quot;, &quot;TOR&quot;, &quot;NOP&quot;, &quot;WAS&quot;, &quot;BRK&quot;,&quot;CHI&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;MIL&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;%
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `BLK`), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-5.png" width="672" /></p>
-<pre class="r"><code>playoffs %&gt;% 
-  filter(SeasonStart == &quot;2015&quot;) %&gt;% 
-  filter(Tm%in%c(&quot;IND&quot;,&quot;MIA&quot;, &quot;TOR&quot;, &quot;CHA&quot;, &quot;CLE&quot;, &quot;DET&quot;,&quot;BOS&quot;, &quot;ATL&quot;,&quot;SAS&quot;,
-                 &quot;OKC&quot;,&quot;LAC&quot;,&quot;HOU&quot;,&quot;POR&quot;,&quot;GSW&quot;,&quot;MEM&quot;,&quot;DAL&quot;)) %&gt;% 
-  ggplot() +
-  stat_summary(aes(x = Tm, y = `3P%`), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<pre><code>## Warning: Removed 36 rows containing non-finite values (`stat_summary()`).</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-4-6.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+In 2016, the 3 points percentage mean and median were higher for players in CLE than in BOS and OKC, which made 3P% a useful index to be evaluated.</p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+This bar chart shows the average steals for each team in the 2013-2014 playoffs. We can see the champion team SAS get the second greatest average steals, which shows the average level of the SAS players is high this year. This also proves to us that STL is an important variable in our model.</p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+This bar chart shows the average assists for each team in the 2013-2014 playoffs. The champion team SAS got the second greatest average assists, which also proves to us that AST is an important variable in our consideration.</p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+This bar chart shows the average value over placement player for each team in the 2013-2014 playoffs. The champion team SAS got the third greatest average value over placement player, which means that the players in that team this year are very good and valuable, and that also shows us that VORP is an important variable in our consideration.</p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+This chart presents the average blocked shots of Playoffs teams in 2014-2015. The champion GSW also gets a higher blocked shots than most of the other teams.</p>
 </div>
 <div id="modeling" class="section level2">
 <h2>Modeling</h2>
@@ -272,7 +187,7 @@ auc</code></pre>
 abline(a = 0, b = 1)
 auc &lt;- round(auc, 4)
 legend(.6, .4, auc, title = &quot;AUC&quot;, cex = 1)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>#model for 2015
 logistic_model &lt;- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
                       data = combine5, 
@@ -344,7 +259,7 @@ auc</code></pre>
 abline(a = 0, b = 1)
 auc &lt;- round(auc, 4)
 legend(.6, .4, auc, title = &quot;AUC&quot;, cex = 1)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <pre class="r"><code>#model for 2016
 logistic_model &lt;- glm(playoff ~ mean_per + mean_trb+ mean_ast+ mean_ts + mean_blk+ mean_3p, 
                       data = combine6, 
@@ -422,7 +337,7 @@ auc</code></pre>
 abline(a = 0, b = 1)
 auc &lt;- round(auc, 4)
 legend(.6, .4, auc, title = &quot;AUC&quot;, cex = 1)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
 <pre class="r"><code>#prediction for 2017
 full7&lt;- nba_clean%&gt;%
   filter(SeasonStart ==&quot;2016&quot;)%&gt;%
@@ -474,27 +389,27 @@ Center: C - Hassan Whiteside</p>
 <pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;PG&quot;) %&gt;% 
   ggplot() +
   stat_summary(aes(x = AST, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Shooting Guard: SG - Klay Tompson, James Harden</p>
 <pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;SG&quot;) %&gt;% 
   ggplot() +
   stat_summary(aes(x = `3PA`, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Small Forward: SF - Lebron James, Kevin Durant</p>
 <pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;SF&quot;) %&gt;% 
   ggplot() +
   stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Power Forward: PF - Serge Ibaka, Draymond Green</p>
 <pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;PF&quot;) %&gt;% 
   ggplot() +
   stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Center: C - Dwight Howard, Hassan Whiteside</p>
 <pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;C&quot;) %&gt;% 
   ggplot() +
   stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
-<p><img src="/analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="rubric-on-this-page" class="section level2">
 <h2>Rubric: On this page</h2>
