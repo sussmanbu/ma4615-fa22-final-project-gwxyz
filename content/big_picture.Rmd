@@ -1,9 +1,9 @@
 ---
 title: Big Picture
-description:
+description: null
 toc: true
-featuredImage: /images/NBA_Finals_logo.png
-featuredVideo:
+featuredImage: http://hoopshabit.com/files/2014/06/NBA-Finals-Logo.jpg
+featuredVideo: 
 draft: false
 ---
 
