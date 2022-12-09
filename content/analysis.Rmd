@@ -36,8 +36,9 @@ ggplot(data=playoff_3team_2014, aes(x=STL, fill=Tm)) +
   labs(x="Steals",title="STL of CHA, MEM, SAS for 2014 season",fill = "Team")
 ```
 The graph shows that SAS had a higher steal mean and median than MEM and CHA. That might contribute to winning the championship.
- 
- 
+
+<br>
+
 ```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
   geom_density(alpha=0.5, na.rm = TRUE) +
@@ -45,8 +46,9 @@ ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
   theme_minimal()+
   labs(x="Assists",title="AST of CHA, MEM, SAS for 2014 season",fill = "Team")
 ```
-Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship.
+Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship. \n
  
+<br>
  
 ```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=VORP, fill=Tm)) +
@@ -57,6 +59,7 @@ ggplot(data=playoff_3team_2014, aes(x=VORP, fill=Tm)) +
 ```
 Players in SAS had a relatively higher VORP than other players. Many of them earned 3, while players in CHA and MEM earned only about 0 and 1. It clearly shows that there are more valuable players in SAS, and that may be why it winned the championship.
  
+<br>
  
 ```{r, echo=FALSE}
 ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
@@ -67,6 +70,7 @@ ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
 ```
 In 2016, the 3 points percentage mean and median were higher for players in CLE than in BOS and OKC, which made 3P% a useful index to be evaluated.
 
+<br>
 
 ```{r, echo = FALSE}
 playoffs %>% 
@@ -79,6 +83,7 @@ playoffs %>%
 ```
 This bar chart shows the average steals for each team in the 2013-2014 playoffs. We can see the champion team SAS get the second greatest average steals, which shows the average level of the SAS players is high this year. This also proves to us that STL is an important variable in our model.
  
+<br> 
  
 ```{r, echo = FALSE} 
 playoffs %>% 
@@ -91,6 +96,7 @@ playoffs %>%
 ```
 This bar chart shows the average assists for each team in the 2013-2014 playoffs. The champion team SAS got the second greatest average assists, which also proves to us that AST is an important variable in our consideration.
  
+<br> 
  
 ```{r, echo = FALSE} 
 playoffs %>% 
@@ -103,6 +109,7 @@ playoffs %>%
 ```
 This bar chart shows the average value over placement player for each team in the 2013-2014 playoffs. The champion team SAS got the third greatest average value over placement player, which means that the players in that team this year are very good and valuable, and that also shows us that VORP is an important variable in our consideration.
  
+<br> 
  
 ```{r, echo = FALSE} 
 playoffs %>% 
