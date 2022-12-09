@@ -12,6 +12,72 @@ draft: false
 
 </div>
 
+<pre class="r"><code>data = c(&#39;Tm&#39;,&#39;G&#39;,&#39;GS&#39;,&#39;MP&#39;,&#39;PER&#39;,&#39;TS%&#39;,&#39;3PAr&#39;,&#39;FTr&#39;,&#39;ORB%&#39;,&#39;DRB%&#39;,&#39;TRB%&#39;,&#39;AST%&#39;,
+         &#39;STL%&#39;,&#39;BLK%&#39;,&#39;TOV%&#39;,&#39;USG%&#39;,&#39;OWS&#39;,&#39;DWS&#39;,&#39;WS&#39;,&#39;WS/48&#39;,&#39;OBPM&#39;,&#39;DBPM&#39;,&#39;BPM&#39;,
+         &#39;VORP&#39;,&#39;FG&#39;,&#39;FGA&#39;,&#39;FG%&#39;,&#39;3P&#39;,&#39;3PA&#39;,&#39;3P%&#39;,&#39;2P&#39;,&#39;2PA&#39;,&#39;2P%&#39;,&#39;eFG%&#39;,&#39;FT&#39;,
+         &#39;FTA&#39;,&#39;FT%&#39;,&#39;ORB&#39;,&#39;DRB&#39;,&#39;TRB&#39;,&#39;AST&#39;,&#39;STL&#39;,&#39;BLK&#39;,&#39;TOV&#39;,&#39;PF&#39;,&#39;PTS&#39;,&#39;Team&#39;,
+         &#39;Game Played&#39;,&#39;Game Started&#39;,&#39;Minutes Played&#39;,&#39;Player Efficiency Rating&#39;,
+         &#39;True Shooting Percentage&#39;,&#39;3 point attempt rate&#39;,&#39;Free Throws rate&#39;,
+         &#39;Offensive Rebounds Percentage&#39;,&#39;Defensive Rebounds Precentage&#39;,
+         &#39;Total Rebounds Percentage&#39;,&#39;Assists Percentage&#39;,&#39;Steals Percentage&#39;,
+         &#39;Blocked Shots Percentage&#39;,&#39;Turnovers Percentage&#39;,&#39;Usage Percentage&#39;,
+         &#39;Offensive Win Shares&#39;,&#39;Defensive Win Shares&#39;,&#39;Win Shares&#39;,
+         &#39;Win Shares/48 Minutes&#39;,&#39;Offensive Box Plus/Minus&#39;,&#39;Defensive Box Plus/Minus&#39;,
+         &#39;Box Plus/Minus&#39;,&#39;Value over Placement Player&#39;,&#39;Field Goals Made&#39;,
+         &#39;Field Goals Attempt&#39;,&#39;Field Goals percentage&#39;,&#39;3 points&#39;,&#39;3 points attempt&#39;,
+         &#39;3 points percentage&#39;,&#39;2 points&#39;,&#39;2 points attempt&#39;,&#39;2 points percentage&#39;,
+         &#39;effective field goal percentage&#39;,&#39;free throws made&#39;,&#39;free throws attempted&#39;,
+         &#39;free throws percentage&#39;,&#39;Offensive Rebounds&#39;,&#39;Defensive Rebounds&#39;,
+         &#39;Total Rebounds&#39;,&#39;Assists&#39;,&#39;Steals&#39;,&#39;Blocked Shots&#39;,&#39;Turnovers&#39;,
+         &#39;Person Fouls&#39;,&#39;Points Scored&#39;)
+matrix(data,nrow=46,ncol=2,byrow=FALSE)</code></pre>
+<pre><code>##       [,1]    [,2]                             
+##  [1,] &quot;Tm&quot;    &quot;Team&quot;                           
+##  [2,] &quot;G&quot;     &quot;Game Played&quot;                    
+##  [3,] &quot;GS&quot;    &quot;Game Started&quot;                   
+##  [4,] &quot;MP&quot;    &quot;Minutes Played&quot;                 
+##  [5,] &quot;PER&quot;   &quot;Player Efficiency Rating&quot;       
+##  [6,] &quot;TS%&quot;   &quot;True Shooting Percentage&quot;       
+##  [7,] &quot;3PAr&quot;  &quot;3 point attempt rate&quot;           
+##  [8,] &quot;FTr&quot;   &quot;Free Throws rate&quot;               
+##  [9,] &quot;ORB%&quot;  &quot;Offensive Rebounds Percentage&quot;  
+## [10,] &quot;DRB%&quot;  &quot;Defensive Rebounds Precentage&quot;  
+## [11,] &quot;TRB%&quot;  &quot;Total Rebounds Percentage&quot;      
+## [12,] &quot;AST%&quot;  &quot;Assists Percentage&quot;             
+## [13,] &quot;STL%&quot;  &quot;Steals Percentage&quot;              
+## [14,] &quot;BLK%&quot;  &quot;Blocked Shots Percentage&quot;       
+## [15,] &quot;TOV%&quot;  &quot;Turnovers Percentage&quot;           
+## [16,] &quot;USG%&quot;  &quot;Usage Percentage&quot;               
+## [17,] &quot;OWS&quot;   &quot;Offensive Win Shares&quot;           
+## [18,] &quot;DWS&quot;   &quot;Defensive Win Shares&quot;           
+## [19,] &quot;WS&quot;    &quot;Win Shares&quot;                     
+## [20,] &quot;WS/48&quot; &quot;Win Shares/48 Minutes&quot;          
+## [21,] &quot;OBPM&quot;  &quot;Offensive Box Plus/Minus&quot;       
+## [22,] &quot;DBPM&quot;  &quot;Defensive Box Plus/Minus&quot;       
+## [23,] &quot;BPM&quot;   &quot;Box Plus/Minus&quot;                 
+## [24,] &quot;VORP&quot;  &quot;Value over Placement Player&quot;    
+## [25,] &quot;FG&quot;    &quot;Field Goals Made&quot;               
+## [26,] &quot;FGA&quot;   &quot;Field Goals Attempt&quot;            
+## [27,] &quot;FG%&quot;   &quot;Field Goals percentage&quot;         
+## [28,] &quot;3P&quot;    &quot;3 points&quot;                       
+## [29,] &quot;3PA&quot;   &quot;3 points attempt&quot;               
+## [30,] &quot;3P%&quot;   &quot;3 points percentage&quot;            
+## [31,] &quot;2P&quot;    &quot;2 points&quot;                       
+## [32,] &quot;2PA&quot;   &quot;2 points attempt&quot;               
+## [33,] &quot;2P%&quot;   &quot;2 points percentage&quot;            
+## [34,] &quot;eFG%&quot;  &quot;effective field goal percentage&quot;
+## [35,] &quot;FT&quot;    &quot;free throws made&quot;               
+## [36,] &quot;FTA&quot;   &quot;free throws attempted&quot;          
+## [37,] &quot;FT%&quot;   &quot;free throws percentage&quot;         
+## [38,] &quot;ORB&quot;   &quot;Offensive Rebounds&quot;             
+## [39,] &quot;DRB&quot;   &quot;Defensive Rebounds&quot;             
+## [40,] &quot;TRB&quot;   &quot;Total Rebounds&quot;                 
+## [41,] &quot;AST&quot;   &quot;Assists&quot;                        
+## [42,] &quot;STL&quot;   &quot;Steals&quot;                         
+## [43,] &quot;BLK&quot;   &quot;Blocked Shots&quot;                  
+## [44,] &quot;TOV&quot;   &quot;Turnovers&quot;                      
+## [45,] &quot;PF&quot;    &quot;Person Fouls&quot;                   
+## [46,] &quot;PTS&quot;   &quot;Points Scored&quot;</code></pre>
 <div id="dataset-summary" class="section level2">
 <h2>Dataset Summary</h2>
 <p><a href="https://github.com/peasant98/TheNBACSV" class="uri">https://github.com/peasant98/TheNBACSV</a></p>

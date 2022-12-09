@@ -6,8 +6,27 @@ featuredVideo:
 featuredImage: /images/nba_data.png
 draft: false
 ---
-
-
+```{r}
+data = c('Tm','G','GS','MP','PER','TS%','3PAr','FTr','ORB%','DRB%','TRB%','AST%',
+         'STL%','BLK%','TOV%','USG%','OWS','DWS','WS','WS/48','OBPM','DBPM','BPM',
+         'VORP','FG','FGA','FG%','3P','3PA','3P%','2P','2PA','2P%','eFG%','FT',
+         'FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','Team',
+         'Game Played','Game Started','Minutes Played','Player Efficiency Rating',
+         'True Shooting Percentage','3 point attempt rate','Free Throws rate',
+         'Offensive Rebounds Percentage','Defensive Rebounds Precentage',
+         'Total Rebounds Percentage','Assists Percentage','Steals Percentage',
+         'Blocked Shots Percentage','Turnovers Percentage','Usage Percentage',
+         'Offensive Win Shares','Defensive Win Shares','Win Shares',
+         'Win Shares/48 Minutes','Offensive Box Plus/Minus','Defensive Box Plus/Minus',
+         'Box Plus/Minus','Value over Placement Player','Field Goals Made',
+         'Field Goals Attempt','Field Goals percentage','3 points','3 points attempt',
+         '3 points percentage','2 points','2 points attempt','2 points percentage',
+         'effective field goal percentage','free throws made','free throws attempted',
+         'free throws percentage','Offensive Rebounds','Defensive Rebounds',
+         'Total Rebounds','Assists','Steals','Blocked Shots','Turnovers',
+         'Person Fouls','Points Scored')
+matrix(data,nrow=46,ncol=2,byrow=FALSE)
+```
 ## Dataset Summary
 
 https://github.com/peasant98/TheNBACSV
