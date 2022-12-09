@@ -8,10 +8,10 @@ draft: false
 ---
 
 ```{r, echo = FALSE}
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 
-playoffs <- read_csv(here::here("dataset", "playoffs.csv"))
-combine <- read_csv(here::here("dataset", "combine.csv"))
+suppressMessages(playoffs <- read_csv(here::here("dataset", "playoffs.csv")))
+suppressMessages(combine <- read_csv(here::here("dataset", "combine.csv")))
 nba_clean <- read.csv(here::here("dataset", "nba_clean.csv"))
 load(here::here("dataset/playoffs.RData"))
 load(here::here("dataset/combine.RData"))
@@ -20,8 +20,7 @@ playoff_3team_2016 <- playoffs %>% filter(Tm %in% c("CLE","OKC","BOS")) %>% filt
 playoff_3team_2015 <- playoffs %>% filter(Tm %in% c("GSW","MEM","NOP")) %>% filter(SeasonStart =="2014")
 playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filter(SeasonStart =="2013")
 
-playoffs <- playoffs %>% 
-  filter()
+
 ```
 ## Motivation and Initial Questions
 
