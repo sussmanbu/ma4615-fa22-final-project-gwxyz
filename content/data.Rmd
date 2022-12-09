@@ -6,7 +6,8 @@ featuredVideo:
 featuredImage: /images/nba_data.png
 draft: false
 ---
-```{r}
+## Variable Names
+```{r,echo=FALSE}
 data = c('Tm','G','GS','MP','PER','TS%','3PAr','FTr','ORB%','DRB%','TRB%','AST%',
          'STL%','BLK%','TOV%','USG%','OWS','DWS','WS','WS/48','OBPM','DBPM','BPM',
          'VORP','FG','FGA','FG%','3P','3PA','3P%','2P','2PA','2P%','eFG%','FT',
