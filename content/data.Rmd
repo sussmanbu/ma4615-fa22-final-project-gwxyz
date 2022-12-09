@@ -3,7 +3,7 @@ title: Data
 description:
 toc: true
 featuredVideo:
-featuredImage: images/data-import-cheatsheet-thumbs.png
+featuredImage: /images/nba_data.png
 draft: false
 ---
 
