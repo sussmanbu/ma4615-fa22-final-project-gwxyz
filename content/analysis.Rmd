@@ -19,6 +19,9 @@ load(here::here("dataset/nba_clean.RData"))
 playoff_3team_2016 <- playoffs %>% filter(Tm %in% c("CLE","OKC","BOS")) %>% filter(SeasonStart =="2015")
 playoff_3team_2015 <- playoffs %>% filter(Tm %in% c("GSW","MEM","NOP")) %>% filter(SeasonStart =="2014")
 playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filter(SeasonStart =="2013")
+
+playoffs <- playoffs %>% 
+  filter()
 ```
 ## Motivation and Initial Questions
 
@@ -28,7 +31,7 @@ abcd
 
 ```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=STL, fill=Tm)) +
-  geom_density(alpha=0.5) +
+  geom_density(alpha=0.5, na.rm = TRUE) +
   xlim(0,250) +
   theme_minimal()+
   labs(x="Steals",title="STL of CHA, MEM, SAS for 2014 season",fill = "Team")
@@ -38,7 +41,7 @@ The graph shows that SAS had a higher steal mean and median than MEM and CHA. Th
  
 ```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
-  geom_density(alpha=0.5) +
+  geom_density(alpha=0.5, na.rm = TRUE) +
   xlim(-100,400) +
   theme_minimal()+
   labs(x="Assists",title="AST of CHA, MEM, SAS for 2014 season",fill = "Team")
@@ -48,7 +51,7 @@ Most of the players in SAS assisted more than the other two team players did, wh
  
 ```{r,echo=FALSE}
 ggplot(data=playoff_3team_2014, aes(x=VORP, fill=Tm)) +
-  geom_density(alpha=0.5) +
+  geom_density(alpha=0.5, na.rm = TRUE) +
   xlim(-3,8) +
   theme_minimal() +
   labs(x="Value over Placement Player",title="VORP of CHA, MEM, SAS for 2014 season",fill = "Team")
@@ -58,7 +61,7 @@ Players in SAS had a relatively higher VORP than other players. Many of them ear
  
 ```{r, echo=FALSE}
 ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
-  geom_density(alpha=0.5) +
+  geom_density(alpha=0.5, na.rm = TRUE) +
   xlim(-0.3,0.8) +
   theme_minimal()+
   labs(x="3 Points Percentage",title="3P% of BOS, CLE, OKC for 2016 season",fill = "Team")
