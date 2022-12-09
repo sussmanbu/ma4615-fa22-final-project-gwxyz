@@ -1,20 +1,25 @@
 library(tidyverse)
 library(shiny)
-nba <- read_csv("playoffs.csv") %>% select(SeasonStart,PlayerName,`TS%`,AST,TRB,PTS,BLK,`3P%`)
+nba <- read_csv(here::here("dataset", "playoffs.csv")) %>% 
+  select(SeasonStart,PlayerName,`TS%`,AST,TRB,PTS,BLK,`3P%`)
 
 var <- c("TS%","AST","TRB","PTS","BLK","3P%")
+
+var_value <- c("`TS%`","AST","TRB","PTS","BLK","`3P%`")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
     radioButtons(inputId = "var_x",
                  label = "x variable:",
-                 choices = var,
+                 choiceNames = var,
+                 choiceValues = var_value,
                  inline = TRUE),
     
     radioButtons(inputId = "var_y",
                  label = "y variable:",
-                 choices = var,
+                 choiceNames = var,
+                 choiceValues = var_value,
                  inline = TRUE),
     
     plotOutput("plot",  brush = "plot_brush" ), 
@@ -31,7 +36,7 @@ server <- function (input, output) {
     cat(str_c("Window: ",
               input$var_x, "= (", input$plot_brush$xmin, ", ", input$plot_brush$xmax, ")\n", "        ",
               input$var_y, "= (", input$plot_brush$ymin, ", ", input$plot_brush$ymax, ")\n"))
-    brushed <- brushedPoints(nba, input$plot_brush, xvar = input$var_x, yvar = input$var_y)
+    brushed <- brushedPoints(nba, input$plot_brush, xvar = str_remove_all(input$var_x,'`'), yvar = str_remove_all(input$var_y,'`'))
     print(brushed)
   })
 

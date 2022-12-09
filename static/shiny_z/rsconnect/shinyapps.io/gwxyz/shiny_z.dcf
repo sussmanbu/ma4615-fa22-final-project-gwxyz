@@ -1,0 +1,13 @@
+name: shiny_z
+title: shiny_z
+username:
+account: gwxyz
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7857414
+bundleId: 6616005
+url: https://gwxyz.shinyapps.io/shiny_z/
+when: 1670597366.1873
+lastSyncTime: 1670597366.18731
+asMultiple: FALSE
+asStatic: FALSE

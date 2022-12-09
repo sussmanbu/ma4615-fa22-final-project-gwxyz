@@ -1,11 +1,3 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
 library(shiny)
 library(tidyverse)
@@ -33,6 +25,8 @@ Tm_choice <- playoffs %>% pull(Tm) %>%
 
 var <- c("`TS%`", "AST", "TRB", "PTS", "BLK", "`3P%`")
 
+var_name <- c("TS%", "AST", "TRB", "PTS", "BLK", "3P%")
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
@@ -55,9 +49,10 @@ ui <- fluidPage(
         
         
         radioButtons(inputId = "var",
-                      label = "Variable:",
-                      choices = var, 
-                     inline = TRUE)
+                    label = "Variable:",
+                    choiceNames = var_name, 
+                    choiceValues = var, 
+                    inline = TRUE)
         
             ),
         mainPanel(
@@ -75,7 +70,7 @@ server <- function(input, output) {
         filter(Tm %in% (input$Tm)) %>% 
         ggplot() +
         stat_summary(aes_string(x = "Tm", y = input$var), 
-                     fun = mean, geom = "bar")
+                     fun = mean, geom = "bar", na.rm = TRUE)
     })
 }
 
