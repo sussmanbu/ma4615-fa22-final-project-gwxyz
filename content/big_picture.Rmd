@@ -1,10 +1,10 @@
 ---
 title: Big Picture
 description: null
-toc: true
-featuredImage: http://hoopshabit.com/files/2014/06/NBA-Finals-Logo.jpg
+toc: yes
+featuredImage: /images/NBA_Finals_logo.png
 featuredVideo: 
-draft: false
+draft: no
 ---
 
 This comes from the file `content/big_picture.Rmd`.
