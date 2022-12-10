@@ -1,11 +1,10 @@
 library(tidyverse)
 library(shiny)
-nba <- read_csv(here::here("dataset", "playoffs.csv")) %>% 
-  select(SeasonStart,PlayerName,`TS%`,AST,TRB,PTS,BLK,`3P%`)
+nba <- read_csv("playoffs.csv") %>% select(SeasonStart,PlayerName,Age,AST,STL,VORP,BLK,`3P%`)
 
-var <- c("TS%","AST","TRB","PTS","BLK","3P%")
+var <- c("Age","AST","STL","VORP","BLK","3P%")
 
-var_value <- c("`TS%`","AST","TRB","PTS","BLK","`3P%`")
+var_value <- c("Age","AST","STL","VORP","BLK","`3P%`")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
