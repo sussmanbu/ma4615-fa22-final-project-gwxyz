@@ -1,6 +1,7 @@
 # MA[46]15 Final Project
 
-**Make sure to read the full README file below, all pages and posts on your initial site, and look through the files in the `content` folder and the `config.toml` file.**
+
+[Here](Video.mp4) is our video for interactive dashboard.
 
 For your final project, your team will be 
 
