@@ -313,6 +313,7 @@ Lastly, we made our prediction on every NBA team's chance of winning the 2017 ch
 
 
 ## Conclusion
+
 Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.
 
 
