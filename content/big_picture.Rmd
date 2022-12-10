@@ -7,62 +7,62 @@ featuredVideo:
 draft: no
 ---
 
-This comes from the file `content/big_picture.Rmd`.
+# If they don’t win the championship, who will?
 
-Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Importantly, these should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression. Focus on interpretation and visualizations.
+## Introduction
 
+Everyone has a dream team in one’s mind, and it does not always win the championship in reality. What will be the dream team favored by 70 years of data starting from 1950? SAS, LAL, or GSW?
+
+<br> 
+ 
+Our goal is to find the best team and best lineup based on the latest three years in our dataset. What are the most related factors towards a team’s winning, and how do they affect the performance for each position?
+
+
+## Explanation
+Our data analysis starts with exploring relationships between individual variables and looking for any potential dependencies between variables. In order to find the best variables that can successfully predict the competence of a certain team, we create a model to include every variable we think that’s most important and observe any significant predictors.
+
+
+## W!Z!Y! Model!
+This model demonstrates that variables like three point percentage and steals have huge effects on NBA results, which allow us to find out the best team. 
+ 
+<br>
+ 
+We also analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench. 
+
+## Conclusion
+
+### Best Team
+
+wzy
+
+### Best lineup
+
+```{r,echo=FALSE}
+df <- data.frame('Position'=c('Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'),
+                 'Starting-Lineup'=c('Stephen Curry', 'Klay Tompson', 'Lebron James', 'Serge Ibaka', 'Dwight Howard'),
+                 'Substitute Bench'=c('Russell Westbrook', 'James Harden', 'Kevin Durant', 'Draymond Green', 'Hassan Whiteside'))
+
+df
+```
+
+<br>
 ---
 
-## Rubric: On this page
 
-You will
+## Interactive
 
+[This one]( https://gwxyz.shinyapps.io/shiny_z/) and [that one](https://gwxyz.shinyapps.io/shinyx/) are the interactive dashboard we have.
 
+<br>
 
-* Title
-  * Your big picture page should have a creative/click-baity title/headline that provides a hint about your thesis.
-* Clarity of Explanation
-  * You should have a clear thesis/goal for this page. What are you trying to show? Make sure that you explain your analysis in detail but don't go into top much mathematics or statistics. The audience for this page is the general public (to the extent possible).
-* Quality of Figures
-  * Each figure should be very polished and also not too complicated. There should be a clear interpretation of the figure so the figure has a clear purpose. Even something like a histogram can be difficult to interpret for non-experts.
-* Creativity
-  * Do your best to make things interesting. Think of a story. Think of how each part of your analysis supports the previous part or provides a different perspective.
-  
-**Note**: This page should have no code visible, i.e. use `echo=FALSE`.  
+For our first interactive dashboard, users can choose the variables for x and y axis, so that the relationship between any two variables can be easily shown on the graph. In addition, users can also select data points by brushing, the maximum and minimum value for the selected region are shown in the parenthesis. Data for all 6 variables and start season for the specific players that are selected will also be directly displayed below.  This interactive program provides a general information for all the players about their performance, and the users are able to figure out whether two variables have a relationship between them.
 
----
+<br>
 
-## Rubric: Other components
+For our second interactive website, users can choose a specific year, a specific variable, and the teams among all the teams that made into the playoffs for these three years. If the chosen team didn’t made into the playoff for that particular year, then the bar chart will not change. This interactive dashboard allows users to observe the performance of those teams that they are interested in.
 
-### Interactive
-
-You will also be required to make an interactive dashboard like [this one]( https://gwxyz.shinyapps.io/shinyx/) and [that one](https://gwxyz.shinyapps.io/shiny_z/)
-
-
-Your Big Data page should include a link to an interactive dashboard. The dashboard should be created either using Shiny or FlexDashboard (or another tool with professor's approval). This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
-
-* Quality and ease of use of the interactive components.
-Is it clear what can be explored using your interactive components?
-Does it enhance and reinforce your conclusions from the Big Picture?
-Plotly with default hover text will get no credit. Be creative!
-
-
-### Video Recording
-
-Make a video recording (probably using Zoom) demonstrating your interactive components.
-You should provide a quick explanation of your data and demonstrate some of the conclusions from your EDA.
-This video should be no longer than 4 minutes.
-Include a link to your video (and password if needed) in your README.md file on your Github repository. You are not required to provide a link on the website.
-This can be presented by any subset of the team members.
 
 
 ### Rest of the Site
 
-Finally, here are important things to keep in mind for the rest of the site. 
-
-The main title of your page is informative.
-Each post has an author/description/informative title.
-All lab required posts are present.
-Each page (including the home page) has a nice featured image associated with it.
-Your about page is up to date and clean.
 You have removed the generic posts from the initial site template.
