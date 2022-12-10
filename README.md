@@ -1,7 +1,7 @@
 # MA[46]15 Final Project
 
 
-[Here](Video.mp4) is our video for interactive dashboard.
+[Here](/Video.mp4) is our video for interactive dashboard.
 
 For your final project, your team will be 
 
