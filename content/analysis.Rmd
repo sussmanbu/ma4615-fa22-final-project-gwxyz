@@ -24,7 +24,7 @@ playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filt
 ```
 ## Motivation and Initial Questions
 
-abcd
+abc
 
 ## Important Variable in NBA
 
@@ -266,7 +266,7 @@ predict_reg
 ```
 ## Model
 We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.
-
+ 
 ## Explanation
 Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.
 
