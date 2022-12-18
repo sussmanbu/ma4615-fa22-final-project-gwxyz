@@ -1,0 +1,77 @@
+---
+title: Analysis 4 ---- Further Analysis
+description:
+toc: true
+authors: []
+tags: []
+categories: []
+series: []
+date: 2022-12-18T00:09:31-05:00
+lastmod: 2022-12-18T00:09:31-05:00
+featuredVideo:
+featuredImage:
+draft: false
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="further-analysis" class="section level2">
+<h2>Further Analysis</h2>
+<p>During our team conversation, we find out that our favorite teams are all different. And our favorite team does not always win the championship. Therefore, we decided to build a dream team by analyzing all 5 positions. which is able to sweep all other teams. We analyze different positions using corresponding factors and come up with a “Dream Team” by choosing the top one in each position to form the starting line-up and choosing second place in each position to form the substitute bench.
+Point Guard is responsible for assist, passer and ball handler. We choose “AST” to analyze “Point Guard”
+Shooting Guard’s main objective is to score points for their team and steal the ball on defense. We choose “3PA” to analyze “Shooting Guard”.
+Small Forward is responsible for scoring points and defending, and often are secondary or tertiary rebounders behind the power forward and center. So we choose “PTS” to analyze “Small Forward”.
+Power Forward is responsible for rebounding, blocking shots and defending the post, and occasionally shooting. So we choose “BLK” to analyze “Power Forward”.
+Center is the most important position, as he is the last line of defense against people driving towards the basket. We choose “ORB” to analyze “Center”.</p>
+<p>We validate our assumptions by choosing each variable and graphing the performance of different positions. If the name of the highest curve matches our assumption, then our assumption is correct.</p>
+<p>The graph we create supports our assumption as Point Guard’s curve is the highest curve among all the curves, so this helps us to validate that AST is the most related variable for the position “Point Guard”.</p>
+<pre class="r"><code>suppressPackageStartupMessages(library(tidyverse))
+suppressMessages(nba_clean &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;nba_clean.csv&quot;)))
+nba_clean %&gt;% filter(Pos%in%c(&quot;PG&quot;,&quot;SG&quot;,&quot;PF&quot;, &quot;SF&quot;, &quot;C&quot;)) %&gt;% filter(SeasonStart%in%c(&quot;2011&quot;,&quot;2012&quot;,&quot;2013&quot;,&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;)) %&gt;%
+  ggplot(mapping=aes(x=SeasonStart, y=`AST`, colour = Pos)) +
+  stat_summary(fun = mean, geom = &quot;line&quot;)</code></pre>
+<p><img src="/analysis4_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>suppressMessages(playoffs &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;playoffs.csv&quot;)))</code></pre>
+<p>The graph we create supports our assumption that as Shooting Guard’s curve is the highest curve among all the curves, so this helps us to validate 3PA is the most related variable for the position “Shooting Guard”.</p>
+<pre class="r"><code>nba_clean %&gt;% filter(Pos%in%c(&quot;PG&quot;,&quot;SG&quot;,&quot;PF&quot;, &quot;SF&quot;, &quot;C&quot;)) %&gt;% filter(SeasonStart%in%c(&quot;2011&quot;,&quot;2012&quot;,&quot;2013&quot;,&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;)) %&gt;%
+  ggplot(mapping=aes(x=SeasonStart, y=`3PA`, colour = Pos)) +
+  stat_summary(fun = mean, geom = &quot;line&quot;)</code></pre>
+<p><img src="/analysis4_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>The graph we create supports our assumption as Center’s curve is the highest curve among all the curves, so this helps us to validate that ORB is the most related variable for the position “Center”.</p>
+<pre class="r"><code>nba_clean %&gt;% filter(Pos%in%c(&quot;PG&quot;,&quot;SG&quot;,&quot;PF&quot;, &quot;SF&quot;, &quot;C&quot;)) %&gt;% filter(SeasonStart%in%c(&quot;2011&quot;,&quot;2012&quot;,&quot;2013&quot;,&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;)) %&gt;%
+  ggplot(mapping=aes(x=SeasonStart, y=ORB, colour = Pos)) +
+  stat_summary(fun = mean, geom = &quot;line&quot;)</code></pre>
+<p><img src="/analysis4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We also graph the other two positions using the same method. And based on the graphs above, our assumption is correct.</p>
+<p>Power Forward: PF - Serge Ibaka, Draymond Green</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;PF&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis4_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Small Forward: SF - Lebron James, Kevin Durant</p>
+<pre class="r"><code>playoffs %&gt;% filter(Tm%in%c(&quot;IND&quot;, &quot;SAS&quot;, &quot;MIA&quot;, &quot;OKC&quot;,&quot;GSW&quot;, &quot;CLE&quot;, &quot;HOU&quot;, &quot;ATL&quot;, &quot;BOS&quot;)) %&gt;% filter(Pos == &quot;SF&quot;) %&gt;% 
+  ggplot() +
+  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = &quot;bar&quot;)</code></pre>
+<p><img src="/analysis4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>Starting-Lineup
+<ul>
+<li>Point Guard: PG - Stephen Curry</li>
+<li>Shooting Guard: SG - Klay Tompson</li>
+<li>Small Forward: SF - Lebron James</li>
+<li>Power Forward: PF - Serge Ibaka</li>
+<li>Center: C - Dwight Howard</li>
+</ul></li>
+<li>Substitute Bench
+<ul>
+<li>Point Guard: PG - Russell Westbrook</li>
+<li>Shooting Guard: SG - James Harden</li>
+<li>Small Forward: SF - Kevin Durant</li>
+<li>Power Forward: PF - Draymond Green</li>
+<li>Center: C - Hassan Whiteside</li>
+</ul></li>
+</ul>
+</div>

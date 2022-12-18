@@ -24,108 +24,17 @@ playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filt
 ```
 ## Motivation and Initial Questions
 
-abc
+For the EDA, our initial questions are
+What are the variables that have the most significant contribution to a team’s competence?
+Are these variables we interested in truly increasing the chance of a team winning the championship?
+Can we make championship predictions based on the variables we selected?
+What type of model can we use to make the predictions, is the model reliable/accurate? 
+What are some limitations of the model and other factors that have potential influence on our prediction?
 
-## Important Variable in NBA
-
-```{r,echo=FALSE}
-ggplot(data=playoff_3team_2014, aes(x=STL, fill=Tm)) +
-  geom_density(alpha=0.5, na.rm = TRUE) +
-  xlim(0,250) +
-  theme_minimal()+
-  labs(x="Steals",title="STL of CHA, MEM, SAS for 2014 season",fill = "Team")
-```
-The graph shows that SAS had a higher steal mean and median than MEM and CHA. That might contribute to winning the championship.
-
-<br>
-
-```{r,echo=FALSE}
-ggplot(data=playoff_3team_2014, aes(x=AST, fill=Tm)) +
-  geom_density(alpha=0.5, na.rm = TRUE) +
-  xlim(-100,400) +
-  theme_minimal()+
-  labs(x="Assists",title="AST of CHA, MEM, SAS for 2014 season",fill = "Team")
-```
-Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship. \n
- 
-<br>
- 
-```{r,echo=FALSE}
-ggplot(data=playoff_3team_2014, aes(x=VORP, fill=Tm)) +
-  geom_density(alpha=0.5, na.rm = TRUE) +
-  xlim(-3,8) +
-  theme_minimal() +
-  labs(x="Value over Placement Player",title="VORP of CHA, MEM, SAS for 2014 season",fill = "Team")
-```
-Players in SAS had a relatively higher VORP than other players. Many of them earned 3, while players in CHA and MEM earned only about 0 and 1. It clearly shows that there are more valuable players in SAS, and that may be why it winned the championship.
- 
-<br>
- 
-```{r, echo=FALSE}
-ggplot(data=playoff_3team_2016, aes(x=`3P%`, fill=Tm)) +
-  geom_density(alpha=0.5, na.rm = TRUE) +
-  xlim(-0.3,0.8) +
-  theme_minimal()+
-  labs(x="3 Points Percentage",title="3P% of BOS, CLE, OKC for 2016 season",fill = "Team")
-```
-In 2016, the 3 points percentage mean and median were higher for players in CLE than in BOS and OKC, which made 3P% a useful index to be evaluated.
-
-<br>
-
-```{r, echo = FALSE}
-playoffs %>% 
-  filter(SeasonStart == "2013") %>% 
-  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
-                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
-  ggplot() +
-  stat_summary(aes(x = reorder(Tm, STL, decreasing = TRUE, na.rm = TRUE), y = STL), fun = mean, geom = "bar", na.rm = TRUE) +
-  labs(title = "Average Steals of Playoffs Teams in 2013", x = "Team", y = "Steals")
-```
-This bar chart shows the average steals for each team in the 2013-2014 playoffs. We can see the champion team SAS get the second greatest average steals, which shows the average level of the SAS players is high this year. This also proves to us that STL is an important variable in our model.
- 
-<br> 
- 
-```{r, echo = FALSE} 
-playoffs %>% 
-  filter(SeasonStart == "2013") %>% 
-  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
-                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
-  ggplot() +
-  stat_summary(aes(x = reorder(Tm, AST, decreasing = TRUE, na.rm = TRUE), y = AST), fun = mean, geom = "bar", na.rm = TRUE) +
-  labs(title = "Average Assists of Playoffs Teams in 2013", x = "Team", y = "Assists")
-```
-This bar chart shows the average assists for each team in the 2013-2014 playoffs. The champion team SAS got the second greatest average assists, which also proves to us that AST is an important variable in our consideration.
- 
-<br> 
- 
-```{r, echo = FALSE} 
-playoffs %>% 
-  filter(SeasonStart == "2013") %>% 
-  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "WAS", "BRK","CHI", "ATL","SAS",
-                 "OKC","LAC","HOU","POR","GSW","MEM","DAL")) %>% 
-  ggplot() +
-  stat_summary(aes(x = reorder(Tm, VORP, decreasing = TRUE, na.rm = TRUE), y = VORP), fun = mean, geom = "bar", na.rm = TRUE) +
-  labs(title = "Average Value over Placement Player of Playoffs Teams in 2013", x = "Team", y = "Value over Placement Player")
-```
-This bar chart shows the average value over placement player for each team in the 2013-2014 playoffs. The champion team SAS got the third greatest average value over placement player, which means that the players in that team this year are very good and valuable, and that also shows us that VORP is an important variable in our consideration.
- 
-<br> 
- 
-```{r, echo = FALSE} 
-playoffs %>% 
-  filter(SeasonStart == "2014") %>% 
-  filter(Tm%in%c("CLE","BOS", "TOR", "NOP", "WAS", "BRK","CHI", "ATL","SAS",
-                 "MIL","LAC","HOU","POR","GSW","MEM","DAL")) %>%
-  ggplot() +
-  stat_summary(aes(x = reorder(Tm, BLK, decreasing = TRUE, na.rm = TRUE), y = BLK), fun = mean, geom = "bar", na.rm = TRUE) + 
-  labs(title = "Average Blocked Shots of Playoffs Teams in 2014",x = "Team", y = "Blocked Shots")
-```
-This chart presents the average blocked shots of Playoffs teams in 2014-2015. The champion GSW also gets a higher blocked shots than most of the other teams.
-
-<br> 
 
 ## Modeling
-In this model section, our goal is trying to predict the chance of each NBA team winning the 2017 championship based on variables we believed that has the most significant contribution to a team's competence. To be able to making the most reliable model and prediction, we decide to use the most recent 3 year's data from every team for our analysis, which takes many considerations into the account, including changes in player's style, intensity of defense, rules of calls and other factors that made big difference between now day's NBA and earlier time. In order to find out strongest predictor variables, we used AIC method to investigate the significance of every variables of our interest. After the predictor variables have been determined, we then made the logistic regression that has predictor variables and the response variables which is 1 and 0 indicating whether the team we are interested in made into playoffs each year. We then used the model we made to make a prediction with year of 2017 and came up with a table of winning index for every team in 2017. Lastly we compared the team who has the highest winning index with the actual championship of 2017 and make our conclusion.
+
+In this model section, our goal is trying to predict the chance of each NBA team winning the 2017 championship based on variables we believe have the most significant contribution to a team’s competence. To be able to making the most reliable model and prediction, we decide to use the most recent 3 year’s data from every team for our analysis, which takes many considerations into the account, including changes in player’s style, intensity of defense, rules of calls and other factors that made big difference between now day’s NBA and earlier time. In order to find out the strongest predictor variables, we used the AIC method to investigate the significance of every variable of our interest. After the predictor variables have been determined, we then make the logistic regression that has predictor variables and the response variables which is 1 and 0 indicating whether the team we are interested in made into playoffs each year. Below are the steps for the model selection.
 ```{r,echo = FALSE}
 #2014
 library(tidyverse)
@@ -285,132 +194,7 @@ auc <- round(auc, 4)
 legend(.6, .4, auc, title = "AUC", cex = 1)
 
 ```
-For 2016's data, we showed our AIC steps for better visualization of how we end up with our best predictors. Our AIC value dropped to 22.62 with predictor variables: age, steal, assist,block, three point and Value over Placement Player. Our logistic regression has shown multiple significant predictors and a strong ROC-AUC Curve model with the AUC value of 0.896. So we believed this will be the best candidate model for us to make the final prediction.
-
-<br> 
-
-```{r,echo = FALSE}
-#prediction for 2017
-full7<- nba_clean%>%
-  filter(SeasonStart =="2016")%>%
-  group_by(Tm)%>%
-  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
-            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
-            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
-            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))
-predict_reg <- predict(logistic_model, 
-                       full7, type = "response")
-p<- tibble(Winning_index = predict_reg)
-team<- select(full6,Tm)
-playoff17<- cbind(team,p)
-top10<- playoff17 %>%
-  arrange(desc(Winning_index)) %>%
-  select(Tm, Winning_index)
-head(top10, 16)
-
-```
-
-## Model
-We made a logistic regression that uses six most important variables as the predictor variables and we set response variables to 1 and 0 indicating whether the team we are interested in makes the playoffs. We then can use the model we made to make a prediction with another year that we are interested in and compare the result whether the champion that we predicted matches the actual championship of that year. The ROC-AUC Curve tells how good our model is and based on the AUC value( 0.708), we believe that our model has certain accuracy for predicting based on the variables we chose.
- 
-## Explanation
-Lastly, we made our prediction on every NBA team's chance of winning the 2017 championship, the label winning index indicate the likelyhood of that team winning the champ and the table shows the top 16 teams winning index. 
+For 2016's data, we showed our AIC steps for better visualization of how we end up with our best predictors. Our AIC value dropped to 22.62 with predictor variables: age, steal, assist,block, three point and Value over Replacement Player. Our logistic regression has shown multiple significant predictors and a strong ROC-AUC Curve model with the AUC value of 0.896. So we believed this will be the best candidate model for us to make the final prediction.
 
 
-## Conclusion
-Our goal is to use playoff data in 2014, 2015, and 2016 to estimate the champion for 2017, and compare with the actual champion in 2017. We use histograms and density lines to analyze which factors have influence on winning a champion. We find that TS%, AST, PTS, BLK, and 3P% are the main factors. Based on this finding, we calculate the mean of each factor for each team, and create a logistic model to estimate the probability of winning the championship for that particular team. Teams that have the probabilities larger than 0.5 are considered as more likely to make into the playoffs, and the team with the largest probability will win the championship based on our prediction.
-
-
-## Further Evaulation
-We analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench. 
-Point Guard is responsible for assist, passer and ball handler. Who are expected to have exceptional passing skills, ball-handling skills, make assists and play good defense against the opposing point guard. And are often valued more for their assist totals than for their scoring. So we choose “AST” to analyze “Point Guard”
-Shooting Guard’s main objective is to score points for their team and steal the ball on defense. Who are known for making shots from beyond the three-point line and being one of the primary players responsible for stealing balls on defense. So we choose “3PA” to analyze “Shooting Guard”.
-Small Forward is responsible for scoring points and defending, and often are secondary or tertiary rebounders behind the power forward and center. So we choose “PTS” to analyze “Small Forward”.
-Power Forward is responsible for rebounding, blocking shots and defending the post, and occasionally shooting. So we choose “BLK” to analyze “Power Forward”.
-Center is the most important position, as he is the last line of defense against people driving towards the basket. And they are responsible for close shots and rebounds on offense and try to block opponents’ shots and rebound their misses on defense. So we choose “ORB” to analyze “Center”. 
- 
-Starting-Lineup
-Point Guard: PG - Stephen Curry
-Shooting Guard: SG - Klay Tompson
-Small Forward: SF - Lebron James
-Power Forward: PF - Serge Ibaka
-Center: C - Dwight Howard
-Substitute Bench
-Point Guard: PG - Russell Westbrook
-Shooting Guard: SG - James Harden
-Small Forward: SF - Kevin Durant
-Power Forward: PF - Draymond Green
-Center: C - Hassan Whiteside
-
-Point Guard: PG - Stephen Curry, Russell Westbrook
-```{r}
-playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PG") %>% 
-  ggplot() +
-  stat_summary(aes(x = AST, y = PlayerName), fun = mean, geom = "bar")
-```
-
-
-Shooting Guard: SG - Klay Tompson, James Harden
-```{r}
-playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SG") %>% 
-  ggplot() +
-  stat_summary(aes(x = `3PA`, y = PlayerName), fun = mean, geom = "bar")
-```
-
-
-Small Forward: SF - Lebron James, Kevin Durant
-```{r}
-playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SF") %>% 
-  ggplot() +
-  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = "bar")
-```
-
-
-Power Forward: PF - Serge Ibaka, Draymond Green
-```{r}
-playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PF") %>% 
-  ggplot() +
-  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = "bar")
-```
-
-
-Center: C - Dwight Howard, Hassan Whiteside
-```{r}
-playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "C") %>% 
-  ggplot() +
-  stat_summary(aes(x = ORB, y = PlayerName), fun = mean, geom = "bar")
-```
-
-
-## Rubric: On this page
-
-you will
-
-
-* Introduce what motivates your Data Analysis (DA)
-  * Which variables and relationships are you most interested in?
-  * What questions are you interested in answering?
-* Breadth of the DA
-  * Make sure that you ask enough initial questions to explore the different variables in your data.
-  * i.e. Do you explore more than just one or two variables? Do you explore a few different relationships or many?
-* Depth of the DA
-  * When you answer one question, usually more questions arise as well. 
-  * The depth of the DA is about coming up with and exploring the answers to these questions, often iterating the process a few times.
-* Modeling and Inference 
-  * You should also include some kind of formal statistical model and/or inference. This could be a linear regression, logistic regression, hypothesis testing etc.
-  * Explain the techniques you used for validating your results.
-  * Describe the results of your modelling and make sure to give a sense of the uncertainty in your estimates and conclusions.
-* Explain the flaws and limitations of your analysis
-  * Are there some assumptions that you needed to make that might not hold? Is there other data that would help to answer your questions? ...
-* Clarity Figures
-  * Are your figures/tables/results easy to read, informative, without problems like overplotting, hard-to-read labels, etc?
-  * Each figure should provide a key insight. Too many figures or other data summaries can detract from this.
-* Clarity of Explanations
-  * Do you introduce why you are doing each analysis?
-  * How well do you explain each figure/result?
-  * Do you provide interpretations that suggest further analysis or explanations for observed phenomenon?
-* Organization and cleanliness.
-  * Make sure to remove excessive warnings, use clean easy-to-read code, organize with sections or multiple pages, use bullets, etc.
-  
-  
-**NOTE**: Your Data Analysis can be broken up into multiple pages if that helps with your organization.
+Here is the [second analysis page](/analysis2/).

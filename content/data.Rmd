@@ -19,7 +19,7 @@ data = c('Tm','G','GS','MP','PER','TS%','3PAr','FTr','ORB%','DRB%','TRB%','AST%'
          'Blocked Shots Percentage','Turnovers Percentage','Usage Percentage',
          'Offensive Win Shares','Defensive Win Shares','Win Shares',
          'Win Shares/48 Minutes','Offensive Box Plus/Minus','Defensive Box Plus/Minus',
-         'Box Plus/Minus','Value over Placement Player','Field Goals Made',
+         'Box Plus/Minus','Value over Replacement Player','Field Goals Made',
          'Field Goals Attempt','Field Goals percentage','3 points','3 points attempt',
          '3 points percentage','2 points','2 points attempt','2 points percentage',
          'effective field goal percentage','free throws made','free throws attempted',

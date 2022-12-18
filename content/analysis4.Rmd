@@ -1,0 +1,88 @@
+---
+title: Analysis 4 ---- Further Analysis
+description:
+toc: true
+authors: []
+tags: []
+categories: []
+series: []
+date: 2022-12-18T00:09:31-05:00
+lastmod: 2022-12-18T00:09:31-05:00
+featuredVideo:
+featuredImage:
+draft: false
+---
+
+## Further Analysis
+
+During our team conversation, we find out that our favorite teams are all different. And our favorite team does not always win the championship. Therefore, we decided to build a dream team by analyzing all 5 positions. which is able to sweep all other teams. We analyze different positions using corresponding factors and come up with a “Dream Team” by choosing the top one in each position to form the starting line-up and choosing second place in each position to form the substitute bench. 
+	Point Guard is responsible for assist, passer and ball handler. We choose “AST” to analyze “Point Guard”
+	Shooting Guard’s main objective is to score points for their team and steal the ball on defense. We choose “3PA” to analyze “Shooting Guard”.
+	Small Forward is responsible for scoring points and defending, and often are secondary or tertiary rebounders behind the power forward and center. So we choose “PTS” to analyze “Small Forward”.
+	Power Forward is responsible for rebounding, blocking shots and defending the post, and occasionally shooting. So we choose “BLK” to analyze “Power Forward”.
+	Center is the most important position, as he is the last line of defense against people driving towards the basket. We choose “ORB” to analyze “Center”. 
+ 
+We validate our assumptions by choosing each variable and graphing the performance of different positions. If the name of the highest curve matches our assumption, then our assumption is correct.
+ 
+The graph we create supports our assumption as Point Guard’s curve is the highest curve among all the curves, so this helps us to validate that AST is the most related variable for the position “Point Guard”.
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressMessages(nba_clean <- read_csv(here::here("dataset", "nba_clean.csv")))
+nba_clean %>% filter(Pos%in%c("PG","SG","PF", "SF", "C")) %>% filter(SeasonStart%in%c("2011","2012","2013","2014","2015","2016")) %>%
+  ggplot(mapping=aes(x=SeasonStart, y=`AST`, colour = Pos)) +
+  stat_summary(fun = mean, geom = "line")
+
+
+suppressMessages(playoffs <- read_csv(here::here("dataset", "playoffs.csv")))
+```
+
+The graph we create supports our assumption that as Shooting Guard’s curve is the highest curve among all the curves, so this helps us to validate 3PA is the most related variable for the position “Shooting Guard”. 
+
+```{r}
+nba_clean %>% filter(Pos%in%c("PG","SG","PF", "SF", "C")) %>% filter(SeasonStart%in%c("2011","2012","2013","2014","2015","2016")) %>%
+  ggplot(mapping=aes(x=SeasonStart, y=`3PA`, colour = Pos)) +
+  stat_summary(fun = mean, geom = "line")
+```
+
+The graph we create supports our assumption as Center’s curve is the highest curve among all the curves, so this helps us to validate that ORB is the most related variable for the position “Center”.
+
+```{r}
+nba_clean %>% filter(Pos%in%c("PG","SG","PF", "SF", "C")) %>% filter(SeasonStart%in%c("2011","2012","2013","2014","2015","2016")) %>%
+  ggplot(mapping=aes(x=SeasonStart, y=ORB, colour = Pos)) +
+  stat_summary(fun = mean, geom = "line")
+```
+
+We also graph the other two positions using the same method. And based on the graphs above, our assumption is correct.
+
+
+Power Forward: PF - Serge Ibaka, Draymond Green
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "PF") %>% 
+  ggplot() +
+  stat_summary(aes(x = BLK, y = PlayerName), fun = mean, geom = "bar")
+```
+
+Small Forward: SF - Lebron James, Kevin Durant
+```{r}
+playoffs %>% filter(Tm%in%c("IND", "SAS", "MIA", "OKC","GSW", "CLE", "HOU", "ATL", "BOS")) %>% filter(Pos == "SF") %>% 
+  ggplot() +
+  stat_summary(aes(x = PTS, y = PlayerName), fun = mean, geom = "bar")
+```
+
+
+
+* Starting-Lineup
+  * Point Guard: PG - Stephen Curry
+  * Shooting Guard: SG - Klay Tompson
+  * Small Forward: SF - Lebron James
+  * Power Forward: PF - Serge Ibaka
+  * Center: C - Dwight Howard
+
+* Substitute Bench
+  * Point Guard: PG - Russell Westbrook
+  * Shooting Guard: SG - James Harden
+  * Small Forward: SF - Kevin Durant
+  * Power Forward: PF - Draymond Green
+  * Center: C - Hassan Whiteside
+

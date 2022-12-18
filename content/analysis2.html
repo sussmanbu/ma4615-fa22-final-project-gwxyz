@@ -1,0 +1,53 @@
+---
+title: Analysis 2 ---- Data Visualization
+description:
+toc: true
+authors: []
+tags: []
+categories: []
+series: []
+date: 2022-12-17T21:30:49-05:00
+lastmod: 2022-12-17T21:30:49-05:00
+featuredVideo:
+featuredImage: /images/nba_analysis.png
+draft: false
+---
+
+
+<div id="TOC">
+
+</div>
+
+<div id="data-visualization" class="section level2">
+<h2>Data Visualization</h2>
+<p>After finding the variables that influence the winner the most, we use both histograms with line-shaped and bar charts to visualize data and validate our results.
+SAS is the champion for 2014; GSW is the champion for 2015; CLE is the champion for 2016.</p>
+<p><br>
+Histograms: For a specific year and a variable, we randomly choose two teams that are made into the playoffs with the champion team to show the density curve on histogram. The x-axis is the variable and the y-axis is the density curve. These graphs show the comparison of three teams, including the championship, for a particular variable.</p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+The graph shows that SAS had a higher steal mean and median than MEM and CHA. That might contribute to winning the championship.</p>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (`stat_density()`).</code></pre>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Most of the players in SAS assisted more than the other two team players did, which made AST an important criteria for winning the championship.</p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+Players in SAS had a relatively higher VORP than other players. Many of them earned 3, while players in CHA and MEM earned only about 0 and 1. It clearly shows that there are more valuable players in SAS, and that may be why it winned the championship.</p>
+<pre><code>## Warning: Removed 9 rows containing non-finite values (`stat_density()`).</code></pre>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+In 2016, the 3 points percentage mean and median were higher for players in CLE than in BOS and OKC, which made 3P% a useful index to be evaluated.</p>
+<p><br></p>
+<p>Bar charts: For a specific year and variable, we compare the data for all the teams in a descending order to see whether the variable largely affects the winning of championship. The x-axis is the team name and y-axis is the variable name.
+For both types of graphs, we clearly state the axis labels and avoid abbreviations. We also add the title of every plot to make it easy to read. In order to be informative, we add an explanation after every plot and make a conclusive statement for all the graphs.
+We do the same steps for further evaluation in the analysis page.</p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+This bar chart shows the average steals for each team in the 2013-2014 playoffs. We can see the champion team SAS get the second greatest average steals, which shows the average level of the SAS players is high this year. This also proves to us that STL is an important variable in our model.</p>
+<p><br></p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+This bar chart shows the average assists for each team in the 2013-2014 playoffs. The champion team SAS got the second greatest average assists, which also proves to us that AST is an important variable in our consideration.</p>
+<p><br></p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+This bar chart shows the average value over replacement player for each team in the 2013-2014 playoffs. The champion team SAS got the third greatest average value over replacement player, which means that the players in that team this year are very good and valuable, and that also shows us that VORP is an important variable in our consideration.</p>
+<p><br></p>
+<p><img src="/analysis2_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+This chart presents the average blocked shots of Playoffs teams in 2014-2015. The champion GSW also gets a higher blocked shots than most of the other teams.</p>
+<p>Here is the <a href="/analysis3/">third analysis page</a>.</p>
+</div>
