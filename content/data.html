@@ -94,12 +94,9 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::filter()         masks stats::filter()
 ## ✖ readr::guess_encoding() masks rvest::guess_encoding()
 ## ✖ dplyr::lag()            masks stats::lag()</code></pre>
-<pre class="r"><code>nba &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;nbaNew.csv&quot;), col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))</code></pre>
-<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
-## e.g.:
-##   dat &lt;- vroom(...)
-##   problems(dat)</code></pre>
-<pre class="r"><code>nba_clean&lt;- select(nba, -(blanl), -(blank2), -(`3P`), -(`3PA`),-(`3P%`))%&gt;%
+<pre class="r"><code>nba &lt;- read_csv(here::here(&quot;dataset&quot;, &quot;nbaNew.csv&quot;), col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))
+
+nba_clean&lt;- select(nba, -(blanl), -(blank2), -(`3P`), -(`3PA`),-(`3P%`))%&gt;%
   na_if(&quot;&quot;)%&gt;%
   filter(!row_number() %in% c(24625, 24626, 24627, 24628))</code></pre>
 <p>We clean the NBA dataset by specifying the types of all the columns, removing blank columns, and columns and rows that contain lots of NA.</p>

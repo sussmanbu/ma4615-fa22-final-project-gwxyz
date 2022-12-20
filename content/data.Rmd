@@ -7,7 +7,7 @@ featuredImage: /images/nba_data.png
 draft: false
 ---
 ## Variable Names
-```{r,echo=FALSE}
+```{r,echo=FALSE, warning=FALSE}
 data = c('Tm','G','GS','MP','PER','TS%','3PAr','FTr','ORB%','DRB%','TRB%','AST%',
          'STL%','BLK%','TOV%','USG%','OWS','DWS','WS','WS/48','OBPM','DBPM','BPM',
          'VORP','FG','FGA','FG%','3P','3PA','3P%','2P','2PA','2P%','eFG%','FT',
@@ -62,7 +62,7 @@ The last data file is `combine.csv`, which is the final version of the combined 
 Our [load_and_clean_data.R](/load_and_clean_data.R) file is here.
 
 ### NBA Dataset
-```{r}
+```{r, warning=FALSE}
 library(rvest)
 library(tidyverse)
 nba <- read_csv(here::here("dataset", "nbaNew.csv"), col_types = cols(PlayerSalary = col_number(), `TS%` = col_number(),`ORB%` = col_number(),`DRB%` = col_number(),`TRB%` = col_number(),`AST%` = col_number(),`STL%` = col_number(),`BLK%` = col_number(),`TOV%` = col_number(),`USG%` = col_number(),`FG%` = col_number(),`3P%` = col_number(),`2P%` = col_number(),`eFG%` = col_number(),`FT%` = col_number()))

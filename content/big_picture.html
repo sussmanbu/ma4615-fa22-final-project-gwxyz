@@ -24,27 +24,66 @@ draft: no
 <h2>Explanation</h2>
 <p>Our data analysis starts with exploring relationships between individual variables and looking for any potential dependencies between variables. In order to find the best variables that can successfully predict the competence of a certain team, we create a model to include every variable we think that’s most important and observe any significant predictors.</p>
 </div>
-<div id="wzy-model" class="section level2">
-<h2>W!Z!Y! Model!</h2>
-<p>This model demonstrates that variables like three point percentage and steals have huge effects on NBA results, which allow us to find out the best team.</p>
-<p><br></p>
-<p>We also analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench.</p>
+<div id="prediction-model" class="section level2">
+<h2>Prediction Model</h2>
+<p>This is a logistic model and demonstrates that variables age, steal, assist, block and three points have significant effects on NBA team’s competence, we can use this model to make our prediction on the NBA championship.</p>
+<pre><code>## 
+## Call:
+## glm(formula = playoff ~ mean_age + mean_stl + mean_ast + mean_blk + 
+##     mean_3p, family = &quot;binomial&quot;, data = combine6)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.4034  -0.7746  -0.0805   0.5740   2.7159  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept) -48.75805   19.25080  -2.533   0.0113 *
+## mean_age      1.35176    0.61207   2.208   0.0272 *
+## mean_stl      0.36524    0.19514   1.872   0.0612 .
+## mean_ast     -0.06588    0.07378  -0.893   0.3719  
+## mean_blk     -0.16573    0.16749  -0.990   0.3224  
+## mean_3p      34.87594   16.65645   2.094   0.0363 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 42.943  on 30  degrees of freedom
+## Residual deviance: 27.416  on 25  degrees of freedom
+## AIC: 39.416
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<div id="best-team" class="section level3">
-<h3>Best Team</h3>
-<p>wzy</p>
+<div id="best-team" class="section level2">
+<h2>Best Team</h2>
+<p>Using the model above, we are able to obtain a table with teams that have a higher chance of winning the champion for 2017. In our prediction, the 2017 championship is most likely be SAS, which has the highest winning index, while the second highest winning index is GSW.</p>
+<pre><code>##     Tm Winning_index
+## 1  SAS     0.9983127
+## 2  GSW     0.9864207
+## 3  LAC     0.9834590
+## 4  CLE     0.9715875
+## 5  SAC     0.9582206
+## 6  HOU     0.9313386
+## 7  MEM     0.9116486
+## 8  WAS     0.8825779
+## 9  TOT     0.8220494
+## 10 ATL     0.8147579
+## 11 IND     0.7937216
+## 12 BOS     0.7826239
+## 13 DAL     0.7513338
+## 14 MIN     0.7505512
+## 15 OKC     0.6948686
+## 16 DET     0.6759130</code></pre>
 </div>
-<div id="best-lineup" class="section level3">
-<h3>Best lineup</h3>
+<div id="best-lineup" class="section level2">
+<h2>Best lineup</h2>
 <pre><code>##         Position Starting.Lineup  Substitute.Bench
 ## 1    Point Guard   Stephen Curry Russell Westbrook
 ## 2 Shooting Guard    Klay Tompson      James Harden
 ## 3  Small Forward    Lebron James      Kevin Durant
 ## 4  Power Forward     Serge Ibaka    Draymond Green
 ## 5         Center   Dwight Howard  Hassan Whiteside</code></pre>
-</div>
 </div>
 <div id="section" class="section level2">
 <h2><br></h2>
@@ -56,9 +95,5 @@ draft: no
 <p>For our first interactive dashboard, users can choose the variables for x and y axis, so that the relationship between any two variables can be easily shown on the graph. In addition, users can also select data points by brushing, the maximum and minimum value for the selected region are shown in the parenthesis. Data for all 6 variables and start season for the specific players that are selected will also be directly displayed below. This interactive program provides a general information for all the players about their performance, and the users are able to figure out whether two variables have a relationship between them.</p>
 <p><br></p>
 <p>For our second interactive website, users can choose a specific year, a specific variable, and the teams among all the teams that made into the playoffs for these three years. If the chosen team didn’t made into the playoff for that particular year, then the bar chart will not change. This interactive dashboard allows users to observe the performance of those teams that they are interested in.</p>
-<div id="rest-of-the-site" class="section level3">
-<h3>Rest of the Site</h3>
-<p>You have removed the generic posts from the initial site template.</p>
-</div>
 </div>
 </div>

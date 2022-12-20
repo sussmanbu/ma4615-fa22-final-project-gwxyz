@@ -22,20 +22,98 @@ Our goal is to find the best team and best lineup based on the latest three year
 Our data analysis starts with exploring relationships between individual variables and looking for any potential dependencies between variables. In order to find the best variables that can successfully predict the competence of a certain team, we create a model to include every variable we think that’s most important and observe any significant predictors.
 
 
-## W!Z!Y! Model!
-This model demonstrates that variables like three point percentage and steals have huge effects on NBA results, which allow us to find out the best team. 
- 
-<br>
- 
-We also analyze different positions using corresponding factors and come up with a “Dream Team” by choosing top 1 in each position to form the starting line-up and choosing second place in each position to form the substitute bench. 
+## Prediction Model
+This is a logistic model and demonstrates that variables age, steal, assist, block and three points have significant effects on NBA team's competence, we can use this model to make our prediction on the NBA championship.
 
-## Conclusion
+```{r,echo = FALSE}
 
-### Best Team
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(caTools))
+suppressMessages(nba_clean <- read_csv(here::here("dataset", "nba_clean.csv")))
 
-wzy
 
-### Best lineup
+#2016
+partial6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
+            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
+            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))%>%
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "CLE", "DET","BOS", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL"))%>%
+  mutate(playoff = 1)
+full6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
+            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
+            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))
+combine6 <- full6 %>% left_join(partial6, by = c(names(full6)))%>% 
+  mutate(playoff = coalesce(playoff, 0))
+final6 <- select(combine6, c(-Tm))
+#logistic model
+logistic_model <- glm(playoff ~ mean_age + mean_stl+ mean_ast+ mean_blk+ mean_3p, 
+                      data = combine6, 
+                      family = "binomial")
+summary(logistic_model)
+```
+
+
+## Best Team
+Using the model above, we are able to obtain a table with teams that have a higher chance of winning the champion for 2017. In our prediction, the 2017 championship is most likely be SAS, which has the highest winning index, while the second highest winning index is GSW.
+
+```{r,echo = FALSE}
+
+#2016
+partial6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
+            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
+            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))%>%
+  filter(Tm%in%c("IND","MIA", "TOR", "CHA", "CLE", "DET","BOS", "ATL","SAS","OKC","LAC","HOU","POR","GSW","MEM","DAL"))%>%
+  mutate(playoff = 1)
+full6<- nba_clean%>%
+  filter(SeasonStart =="2015")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
+            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
+            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))
+combine6 <- full6 %>% left_join(partial6, by = c(names(full6)))%>% 
+  mutate(playoff = coalesce(playoff, 0))
+final6 <- select(combine6, c(-Tm))
+#logistic model
+logistic_model <- glm(playoff ~ mean_age + mean_stl+ mean_ast+ mean_blk+ mean_3p, 
+                      data = combine6, 
+                      family = "binomial")
+
+```
+
+```{r,echo = FALSE}
+#prediction for 2017
+full7<- nba_clean%>%
+  filter(SeasonStart =="2016")%>%
+  group_by(Tm)%>%
+  summarize(mean_per = mean(PER, na.rm = TRUE), mean_trb = mean(TRB, na.rm = TRUE),mean_ast = mean(AST, na.rm = TRUE),
+            mean_blk = mean(BLK, na.rm = TRUE),mean_3p = mean(`3P%`, na.rm = TRUE),mean_age = mean(Age, na.rm = TRUE),mean_G = mean(G, na.rm = TRUE),
+            mean_stl = mean(STL, na.rm = TRUE),mean_tov = mean(TOV, na.rm = TRUE),mean_ows = mean(OWS, na.rm = TRUE),mean_ows = mean(DWS, na.rm = TRUE),
+            mean_vorp = mean(VORP, na.rm = TRUE),mean_ws = mean(WS, na.rm = TRUE),mean_pf = mean(PF, na.rm = TRUE),mean_fg = mean(FG, na.rm = TRUE),mean_ts = mean(`TS%`, na.rm = TRUE))
+predict_reg <- predict(logistic_model, 
+                       full7, type = "response")
+p<- tibble(Winning_index = predict_reg)
+team<- select(full6,Tm)
+playoff17<- cbind(team,p)
+top10<- playoff17 %>%
+  arrange(desc(Winning_index)) %>%
+  select(Tm, Winning_index)
+head(top10, 16)
+
+```
+
+## Best lineup
 
 ```{r,echo=FALSE}
 df <- data.frame('Position'=c('Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'),
@@ -60,9 +138,3 @@ For our first interactive dashboard, users can choose the variables for x and y 
 <br>
 
 For our second interactive website, users can choose a specific year, a specific variable, and the teams among all the teams that made into the playoffs for these three years. If the chosen team didn’t made into the playoff for that particular year, then the bar chart will not change. This interactive dashboard allows users to observe the performance of those teams that they are interested in.
-
-
-
-### Rest of the Site
-
-You have removed the generic posts from the initial site template.
