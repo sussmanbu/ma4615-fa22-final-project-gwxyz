@@ -24,12 +24,12 @@ playoff_3team_2014 <- playoffs %>% filter(Tm %in% c("SAS","MEM","CHA")) %>% filt
 ```
 ## Motivation and Initial Questions
 
-For the EDA, our initial questions are
-What are the variables that have the most significant contribution to a team’s competence?
-Are these variables we interested in truly increasing the chance of a team winning the championship?
-Can we make championship predictions based on the variables we selected?
-What type of model can we use to make the predictions, is the model reliable/accurate? 
-What are some limitations of the model and other factors that have potential influence on our prediction?
+* For the EDA, our initial questions are
+  * What are the variables that have the most significant contribution to a team’s competence?
+  * Are these variables we interested in truly increasing the chance of a team winning the championship?
+  * Can we make championship predictions based on the variables we selected?
+  * What type of model can we use to make the predictions, is the model reliable/accurate? 
+  * What are some limitations of the model and other factors that have potential influence on our prediction?
 
 
 ## Modeling
